@@ -1,2 +1,2 @@
 # Othello
-A clone of the board game Othello
+A clone of the board game Othello (Reversi)
