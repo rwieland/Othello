@@ -3,6 +3,7 @@ var DIRECTIONS = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], 
 var PLAYERS = ['B', 'W'];
 var CURRENT = 0; // The current player.
 var BOARD = [];
+var POSITIONS = []
 
 // FUNCTIONS FOR MANAGING THE GAME:
 // Sets BOARD to standard starting positions.
@@ -17,6 +18,7 @@ function newBoard() {
 		new Array(8).fill(' '),
 		new Array(8).fill(' ')		
 	];
+	POSITIONS = indices(BOARD)
 	return BOARD
 }
 
@@ -69,14 +71,26 @@ function validMove(position, player) {
 	return moves.every(function(x) {x == false}) ? false : moves
 }
 
-// Returns an array of all board positions.
-function boardPositions() {
-
+// Returns an array of arrays of indices for all elements in arr1.
+// Used to find all positions on board.
+function indices(arr1, arr2 = []) {
+	var result = []
+	for (var i = 0; i < arr1.length; i++) {
+		if (Array.isArray(arr1[i])) {
+			indices(arr1[i], arr2.concat([i])).map(function(x) {result.push(x)})
+		} else {
+			result.push(arr2.concat([i]))
+		}
+	}
+	return result
 }
 
 // Finds all valid moves for a certain player.
 function validMoves(player) {
-	boardPositions().map(function(position) {return validMove(position, player)})
+	var moves = POSITIONS.map(function(position) {
+		return validMove(position, player)
+	})
+	return moves.every(function(x) {x == false}) ? false : moves
 }
 
 // Executes a move by the CURRENT at a certain position.
