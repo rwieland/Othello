@@ -1,0 +1,33 @@
+body {
+	background: lightblue;
+}
+
+h1 {
+	text-align: center;
+}
+
+#game {
+	height: 80vh;
+	width: 80vh;
+	margin: 0 auto;
+}
+
+.row {
+	height: 10vh;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}
+
+.tile {
+	height: 9.5vh;
+	width: 9.5vh;
+	background: lightgreen;
+	border: black solid 0.5vh;
+}
+
+.token {
+	border-radius: 8vh;
+	border: solid black 1px;
+}
