@@ -94,21 +94,19 @@ function nextInLine(position, direction) {
 
 // Returns a row if it is valid for user input.
 function validRow(position, direction, player) {
-	var row = [position]
 	var next = nextInLine(position, direction)
 	var next_is = readBoard(next)
 	if (readBoard(position) == ' ' && next_is != ' ' && next_is != false && next_is != player) {
-		row.push(next)
+		var row = [copyArray(position), copyArray(next)]
 		var valid = function() {
 			next = nextInLine(next, direction)
 			if (readBoard(next) == false || readBoard(next) == ' ') {
 				return false
 			} else if (readBoard(next) == player) {
-				row.push(next)
 				return row
 			} else {
-				row.push(next)
-				valid()
+				row.push(copyArray(next))
+				return valid()
 			}
 		}
 		return valid()
@@ -119,7 +117,7 @@ function validRow(position, direction, player) {
 
 // Checks if a player can play a certain position.
 function validMove(position, player) {
-	if (readBoard(position) == player) {
+	if (readBoard(position) != ' ') {
 		return false
 	} else {
 		var moves = DIRECTIONS.map(function(direction) {
@@ -225,7 +223,7 @@ function clearBoard() {
 
 // Cycles functions until a winner is declared.
 function turn() {
-	if (winner() == false) {
+	if (winner() !== false) {
 		console.log(winner())
 	} else {
 		validMoves(PLAYERS[CURRENT]).map(function(x) {
