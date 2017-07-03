@@ -10,7 +10,7 @@ h1 {
 	height: 80vh;
 	width: 80vh;
 	margin: 0 auto;
-	border: solid black 3px;
+	border: solid black 4px;
 }
 
 .row {
@@ -25,7 +25,7 @@ h1 {
 	height: 9.5vh;
 	width: 9.5vh;
 	background: green;
-	border: black solid 3px;
+	border: black solid 2px;
 	display: flex;
     flex-direction: column;
     justify-content: center;
@@ -35,6 +35,6 @@ h1 {
 	border-radius: 8vh;
 	width: 8vh;
 	height: 8vh;
-	border: solid black 3px;
+	border: solid black 2px;
 	margin: 0 auto;
 }

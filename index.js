@@ -8,6 +8,39 @@ var COUNT = []; // Token count
 var COLORS = {'B': 'black', 'W': 'white'}
 var TURN_HISTORY = []
 
+const STANDARD_BOARD = [
+	new Array(8).fill(' '),
+	new Array(8).fill(' '),
+	new Array(8).fill(' '),
+	[' ', ' ', ' ', 'W', 'B', ' ', ' ', ' '],
+	[' ', ' ', ' ', 'B', 'W', ' ', ' ', ' '],
+	new Array(8).fill(' '),
+	new Array(8).fill(' '),
+	new Array(8).fill(' ')		
+];
+
+const BLACK_BOARD = [
+	new Array(8).fill('B'),
+	new Array(8).fill('B'),
+	new Array(8).fill('B'),
+	new Array(8).fill('B'),
+	new Array(8).fill('B'),
+	new Array(8).fill('B'),
+	new Array(8).fill('B'),
+	new Array(8).fill('B')
+];
+
+const TIE_BOARD = [
+	new Array(8).fill('B'),
+	new Array(8).fill('B'),
+	new Array(8).fill('B'),
+	new Array(8).fill('B'),
+	new Array(8).fill('W'),
+	new Array(8).fill('W'),
+	new Array(8).fill('W'),
+	new Array(8).fill('W')
+];
+
 // FUNCTIONS FOR MANAGING THE GAME:
 
 // Returns an array of arrays of indices for all elements in arr1.
@@ -31,17 +64,8 @@ function copyArray(arr) {
 }
 
 // Sets BOARD to standard starting positions.
-function newBoard() {
-	BOARD = [
-		new Array(8).fill(' '),
-		new Array(8).fill(' '),
-		new Array(8).fill(' '),
-		[' ', ' ', ' ', 'W', 'B', ' ', ' ', ' '],
-		[' ', ' ', ' ', 'B', 'W', ' ', ' ', ' '],
-		new Array(8).fill(' '),
-		new Array(8).fill(' '),
-		new Array(8).fill(' ')		
-	];
+function newBoard(arr = STANDARD_BOARD) {
+	BOARD = copyArray(arr)
 	POSITIONS = indices(BOARD)
 	return BOARD
 }
