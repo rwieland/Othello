@@ -6,6 +6,7 @@ var BOARD = [];
 var POSITIONS = [];
 var COUNT = []; // Token count
 var COLORS = {'B': 'black', 'W': 'white'}
+var TURN_HISTORY = []
 
 // FUNCTIONS FOR MANAGING THE GAME:
 
@@ -21,6 +22,12 @@ function indices(arr1, arr2 = []) {
 		}
 	}
 	return result
+}
+
+function copyArray(arr) {
+	return arr.map(function(x) {
+		return Array.isArray(x) ? copyArray(x) : x
+	})
 }
 
 // Sets BOARD to standard starting positions.
@@ -144,7 +151,8 @@ function winner() {
 function start() {
 	newBoard()
 	drawBoard()
-	turn()
+	TURN_HISTORY.push([copyArray(BOARD), CURRENT])
+	turn()	
 }
 
 // Converts a position to an html selection.
@@ -191,20 +199,28 @@ function clearBoard() {
 
 // Cycles functions until a winner is declared.
 function turn() {
-	console.log("NEW TURN")
 	if (winner()) {
 		console.log(winner())
 	} else {
-		console.log(validMoves(PLAYERS[CURRENT]))
 		validMoves(PLAYERS[CURRENT]).map(function(x) {
 			toSel(x[0][0]).addEventListener('click', function(event) {
 				move(toPos(event.target), PLAYERS[CURRENT])
 				drawBoard()
 				nextPlayer()
+				TURN_HISTORY.push([copyArray(BOARD), CURRENT])
 				turn()
 			})
 		})
 	}
+}
+
+// Undoes the most recent turn.
+function undoTurn() {
+	TURN_HISTORY.pop()
+	BOARD = TURN_HISTORY[TURN_HISTORY.length - 1][0]
+	CURRENT = TURN_HISTORY[TURN_HISTORY.length - 1][1]
+	drawBoard()
+	turn()
 }
 
 // Highlights valid tiles.
