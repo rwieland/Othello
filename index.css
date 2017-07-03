@@ -6,11 +6,24 @@ h1 {
 	text-align: center;
 }
 
+h2 {
+	text-align: center;
+}
+
+ul {
+	list-style-type: none;
+}
+
+li {
+	margin: 2px;
+}
+
 #game {
 	height: 80vh;
 	width: 80vh;
 	margin: 0 auto;
 	border: solid black 4px;
+	background: gray;
 }
 
 .row {
@@ -42,4 +55,13 @@ h1 {
 #game-options {
 	width: 60vh;
 	margin: 0 auto;
+	margin-top: 10vh;
+	border: solid black 4px;
+	background: lightgray;
+	text-align: center;
+}
+
+#start-game {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }

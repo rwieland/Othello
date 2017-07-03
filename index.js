@@ -42,6 +42,8 @@ const TIE_BOARD = [
 ];
 
 const GAME_OPTIONS = document.getElementById('game-options')
+const HIGHLIGHT_OPTION = document.getElementById('highlight-option')
+var HIGHLIGHT = false
 
 // FUNCTIONS FOR MANAGING THE GAME:
 
@@ -176,6 +178,7 @@ function winner() {
 // Starts game
 function start() {
 	GAME_OPTIONS.style.display = 'none'
+	HIGHLIGHT = HIGHLIGHT_OPTION.options[HIGHLIGHT_OPTION.selectedIndex].value == '1'
 	newBoard()
 	drawBoard()
 	TURN_HISTORY.push([copyArray(BOARD), CURRENT])
@@ -230,6 +233,9 @@ function turn() {
 		console.log(winner())
 	} else {
 		validMoves(PLAYERS[CURRENT]).map(function(x) {
+			if (HIGHLIGHT) {
+				addHighlighting(x[0][0])
+			}
 			toSel(x[0][0]).addEventListener('click', function(event) {
 				move(toPos(event.target), PLAYERS[CURRENT])
 				drawBoard()
@@ -251,8 +257,8 @@ function undoTurn() {
 }
 
 // Highlights valid tiles.
-function addHighlighting() {
-	
+function addHighlighting(position) {
+	toSel(position).style.background = 'yellow'
 }
 
 // FUNCTIONS FOR DUMB 'AI'

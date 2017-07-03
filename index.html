@@ -12,36 +12,36 @@
 			<h2>Options</h2>
 			<ul>
 				<li>Players
-					<select>
+					<select id="players-option">
 						<option value="0">2 players</option>
 						<option value="1">1 player</option>
 					</select>
 				</li>
 				<li>Highlight valid moves
-					<select>
+					<select id="highlight-option">
 						<option value="1">Yes</option>
 						<option value="0">No</option>
 					</select>
 				</li>
 				<li>AI
-					<select>
+					<select id="ai-option">
 						<option value="0">NA</option>
 						<option value="1">Random</option>
 						<option value="2">Most tokens</option>
 					</select>
 				</li>
 				<li>First Player
-					<select>
+					<select id="first-option">
 						<option value="0">NA</option>
 						<option value="1">AI</option>
 						<option value="2">User</option>
 					</select>
 				</li>
 				<li>Dimensions
-					<textarea rows="1" cols="2">2</textarea>
+					<textarea rows="1" cols="2" id="dimensions-option">2</textarea>
 				</li>				
 			</ul>
-			<button onclick="start()">Start</button>
+			<button id="start-game" onclick="start()">Start</button>
 		<div>
 	<div>
 	<script src="index.js"></script>
