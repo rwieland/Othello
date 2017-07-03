@@ -92,7 +92,7 @@ function validMove(position, player) {
 		var moves = DIRECTIONS.map(function(direction) {
 			return validRow(position, direction, player)
 		})
-		return moves.every(function(x) {return x == false}) ? false : moves.filter(function(x) {return x != false})
+		return moves.every(function(x) {return x == false}) ? false : moves.filter(function(x) {return x != false &&  x != undefined})
 	}
 }
 
@@ -101,7 +101,7 @@ function validMoves(player) {
 	var moves = POSITIONS.map(function(position) {
 		return validMove(position, player)
 	})
-	return moves.every(function(x) {return x == false}) ? false : moves.filter(function(x) {return x != false})
+	return moves.every(function(x) {return x == false}) ? false : moves.filter(function(x) {return x != false &&  x != undefined})
 }
 
 // Executes a move by the CURRENT at a certain position.
@@ -135,14 +135,16 @@ function tokenCount() {
 
 // Returns the winner if there is one.
 function winner() {
-	return !PLAYERS.every(function(x) {return validMoves(x) == false}) ? false :
-		tokenCount()[0] == COUNT[1] ? 'Tie' : COUNT.indexOf(Math.max.apply(null, COUNT))	
+	return !PLAYERS.every(function(x) {return validMoves(x) == false}) ? false:
+		tokenCount()[0] == COUNT[1] ? 'T' : COUNT.indexOf(Math.max.apply(null, COUNT))	
 }
 
 // FUNCTIONS FOR DISPLAY AND USER INPUT:
-// Cycles functions until a winner is declared.
-function turn() {
-	
+// Starts game
+function start() {
+	newBoard()
+	drawBoard()
+	turn()
 }
 
 // Converts a position to an html selection.
@@ -157,6 +159,7 @@ function toPos(sel) {
 
 // Draws the state of the BOARD.
 function drawBoard() {
+	clearBoard()
 	for (var i = 0; i < BOARD.length; i++) {
 		var row = document.createElement('div')
 		row.className = 'row'
@@ -178,6 +181,7 @@ function drawBoard() {
 	}
 }
 
+// Clears the board from #game
 function clearBoard() {
 	var previous_board = document.querySelectorAll('.row')
 	for (var n = 0; n < previous_board.length; n++) {
@@ -185,9 +189,22 @@ function clearBoard() {
 	}
 }
 
-// Adds event listeners for user input.
-function addSelectionListeners() {
-	
+// Cycles functions until a winner is declared.
+function turn() {
+	console.log("NEW TURN")
+	if (winner()) {
+		console.log(winner())
+	} else {
+		console.log(validMoves(PLAYERS[CURRENT]))
+		validMoves(PLAYERS[CURRENT]).map(function(x) {
+			toSel(x[0][0]).addEventListener('click', function(event) {
+				move(toPos(event.target), PLAYERS[CURRENT])
+				drawBoard()
+				nextPlayer()
+				turn()
+			})
+		})
+	}
 }
 
 // Highlights valid tiles.
