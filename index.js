@@ -42,8 +42,6 @@ const TIE_BOARD = [
 ];
 
 const GAME_OPTIONS = document.getElementById('game-options')
-const HIGHLIGHT_OPTION = document.getElementById('highlight-option')
-var HIGHLIGHT = false
 
 // FUNCTIONS FOR MANAGING THE GAME:
 
@@ -178,11 +176,16 @@ function winner() {
 // Starts game
 function start() {
 	GAME_OPTIONS.style.display = 'none'
-	HIGHLIGHT = HIGHLIGHT_OPTION.options[HIGHLIGHT_OPTION.selectedIndex].value == '1'
 	newBoard()
 	drawBoard()
 	TURN_HISTORY.push([copyArray(BOARD), CURRENT])
 	turn()	
+}
+
+// Gets selected options.
+function options(option) {
+	var e = document.getElementById(option)
+	return e.options[e.selectedIndex].value
 }
 
 // Converts a position to an html selection.
@@ -229,21 +232,36 @@ function clearBoard() {
 
 // Cycles functions until a winner is declared.
 function turn() {
-	if (winner() !== false) {
+	if (winner() !== false) { // If there is a winner
 		console.log(winner())
-	} else {
-		validMoves(PLAYERS[CURRENT]).map(function(x) {
-			if (HIGHLIGHT) {
-				addHighlighting(x[0][0])
-			}
-			toSel(x[0][0]).addEventListener('click', function(event) {
-				move(toPos(event.target), PLAYERS[CURRENT])
-				drawBoard()
-				nextPlayer()
-				TURN_HISTORY.push([copyArray(BOARD), CURRENT])
-				turn()
+	} else if (validMoves(PLAYERS[CURRENT])) { // If the current player can make a move.
+		if (options('players') == '2' || options('human') == CURRENT.toString()) { // If it is a humans turn.
+			validMoves(PLAYERS[CURRENT]).map(function(x) {
+				if (options('highlight') == 1) {
+					addHighlighting(x[0][0], 'yellow')
+				}
+				toSel(x[0][0]).addEventListener('click', function(event) {
+					move(toPos(event.target), PLAYERS[CURRENT])
+					drawBoard()
+					nextPlayer()
+					TURN_HISTORY.push([copyArray(BOARD), CURRENT])
+					turn()
+				})
 			})
-		})
+		} else { // If it is the AIs turn
+			switch(options('ai')) {
+				case '0':
+					randomMove()
+					break
+				case '1':
+					mostTokensMove()
+					break
+			}			
+		}
+	} else { // If the current player cannot make a move but there is no winner.
+		nextPlayer()
+		TURN_HISTORY.push([copyArray(BOARD), CURRENT])
+		turn()
 	}
 }
 
@@ -256,10 +274,50 @@ function undoTurn() {
 	turn()
 }
 
-// Highlights valid tiles.
-function addHighlighting(position) {
-	toSel(position).style.background = 'yellow'
+// Highlights tiles a color.
+function addHighlighting(position, color) {
+	toSel(position).style.background = color
 }
 
 // FUNCTIONS FOR DUMB 'AI'
-// TODO: Add functions for dumb 'ai'
+
+// Selects a random move from a set of moves.
+function randomMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CURRENT]) {
+	var i = Math.floor(Math.random() * moves.length)
+	move(moves[i][0][0], player)
+	drawBoard()
+	moves[i].map(function(x) {
+		x.map(function(y) {
+			addHighlighting(y, 'pink')
+		})
+	})
+	addHighlighting(moves[i][0][0], 'red')
+	nextPlayer()	
+	TURN_HISTORY.push([copyArray(BOARD), CURRENT])
+	turn()
+}
+
+// Selects the moves from a set of moves that net the most tokens.
+// Selects a random move from the selected set.
+function mostTokensMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CURRENT]) {
+	var net_tokens = moves.map(function(x) {
+		var tokens = 1 - x.length
+		x.map(function(y) {
+			tokens += y.length
+		})
+		return tokens
+	})
+	
+	var max_tokens = Math.max.apply(null, net_tokens)
+	var max_moves = moves.filter(function(x,i) {
+		return net_tokens[i] === max_tokens
+	})
+	randomMove(max_moves, player)
+}
+
+// TODO: Win message and reset game.
+// TODO: Add replay.
+// TODO: Display current token count.
+// TODO: Make prettier interface.
+// TODO: Smarter AI.
+// TODO: Add more dimensions.
