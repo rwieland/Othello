@@ -52,7 +52,7 @@ li {
 	margin: 0 auto;
 }
 
-#game-options {
+.game-overlay {
 	width: 60vh;
 	margin: 0 auto;
 	margin-top: 10vh;
@@ -61,7 +61,6 @@ li {
 	text-align: center;
 }
 
-#start-game {
-	margin-top: 10px;
-	margin-bottom: 10px;
+button {
+	margin: 10px;
 }

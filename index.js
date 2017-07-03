@@ -42,6 +42,7 @@ const TIE_BOARD = [
 ];
 
 const GAME_OPTIONS = document.getElementById('game-options')
+const GAME = document.getElementById('game')
 
 // FUNCTIONS FOR MANAGING THE GAME:
 
@@ -233,7 +234,7 @@ function clearBoard() {
 // Cycles functions until a winner is declared.
 function turn() {
 	if (winner() !== false) { // If there is a winner
-		console.log(winner())
+		winDisplay()
 	} else if (validMoves(PLAYERS[CURRENT])) { // If the current player can make a move.
 		if (options('players') == '2' || options('human') == CURRENT.toString()) { // If it is a humans turn.
 			validMoves(PLAYERS[CURRENT]).map(function(x) {
@@ -263,6 +264,37 @@ function turn() {
 		TURN_HISTORY.push([copyArray(BOARD), CURRENT])
 		turn()
 	}
+}
+
+function winDisplay() {
+	clearBoard()
+	win_display = document.createElement('div')
+	win_display.setAttribute('class', 'game-overlay')
+	message = document.createElement('h2')
+	reset_button = document.createElement('button')
+	replay_button = document.createElement('button')
+	win_display.appendChild(message)
+	win_display.appendChild(reset_button)
+	win_display.appendChild(replay_button)
+	
+	if (winner() == "T") {
+		message.innerHTML = 'Tie'
+	} else if (winner() == 'B') {
+		message.innerHTML = 'Black Wins'
+	} else {
+		message.innerHTML = 'White Wins'
+	}
+	
+	reset_button.innerHTML = 'New Game'
+	reset_button.onclick = function() {
+		GAME_OPTIONS.style.display = ''
+		win_display.remove()
+	}
+	
+	replay_button.innerHTML = 'View Game'
+	// TODO: Implement replay.
+	
+	GAME.appendChild(win_display)
 }
 
 // Undoes the most recent turn.
@@ -315,7 +347,7 @@ function mostTokensMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[C
 	randomMove(max_moves, player)
 }
 
-// TODO: Win message and reset game.
+// TODO: Hide unavailable options.
 // TODO: Add replay.
 // TODO: Display current token count.
 // TODO: Make prettier interface.
