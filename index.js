@@ -4,6 +4,8 @@ var PLAYERS = ['B', 'W'];
 var CURRENT = 0; // The current player.
 var BOARD = [];
 var POSITIONS = [];
+var COUNT = []; // Token count
+var COLORS = {'B': 'black', 'W': 'white'}
 
 // FUNCTIONS FOR MANAGING THE GAME:
 
@@ -99,7 +101,7 @@ function validMoves(player) {
 	var moves = POSITIONS.map(function(position) {
 		return validMove(position, player)
 	})
-	return moves.every(function(x) {x == false}) ? false : moves.filter(function(x) {return x != false})
+	return moves.every(function(x) {return x == false}) ? false : moves.filter(function(x) {return x != false})
 }
 
 // Executes a move by the CURRENT at a certain position.
@@ -119,7 +121,7 @@ function nextPlayer() {
 // Returns a count of tokens by PLAYERS on the BOARD.
 function tokenCount() {
 	var merged = [].concat.apply([], BOARD) //
-	return PLAYERS.map(function(player) {
+	COUNT = PLAYERS.map(function(player) {
 		var count = 0;
 		for (var i = 0; i < merged.length; i++) {
 			if (merged[i] == player) {
@@ -128,11 +130,13 @@ function tokenCount() {
 		}
 		return count
 	})
+	return COUNT
 }
 
 // Returns the winner if there is one.
 function winner() {
-	return PLAYERS.every(function(x) {validMoves(x) == false}) ? Math.max.apply(null, tokenCount()) : false	
+	return !PLAYERS.every(function(x) {return validMoves(x) == false}) ? false :
+		tokenCount()[0] == COUNT[1] ? 'Tie' : COUNT.indexOf(Math.max.apply(null, COUNT))	
 }
 
 // FUNCTIONS FOR DISPLAY AND USER INPUT:
@@ -143,12 +147,12 @@ function turn() {
 
 // Converts a position to an html selection.
 function toSel(position) {
-	
+	return document.getElementById(`t${position[0]}${position[1]}`)
 }
 
 // Converts a selected id to a position.
-function toPosition(sel) {
-	
+function toPos(sel) {
+	return sel.id.split('').slice(1).map(function(x) {return parseInt(x)})
 }
 
 // Draws the state of the BOARD.
@@ -163,7 +167,7 @@ function drawBoard() {
 			if (readBoard([i,j]) != ' ') {
 				var token = document.createElement('div')
 				token.className = 'token'
-				token.backgroundColor = 'black'
+				token.style.background = COLORS[readBoard([i,j])]
 				tile.appendChild(token)
 			}
 			row.appendChild(tile)
@@ -171,6 +175,13 @@ function drawBoard() {
 		}
 		var game = document.querySelector('#game')
 		game.appendChild(row)
+	}
+}
+
+function clearBoard() {
+	var previous_board = document.querySelectorAll('.row')
+	for (var n = 0; n < previous_board.length; n++) {
+		previous_board[n].remove()
 	}
 }
 

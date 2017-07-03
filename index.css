@@ -10,6 +10,7 @@ h1 {
 	height: 80vh;
 	width: 80vh;
 	margin: 0 auto;
+	border: solid black 3px;
 }
 
 .row {
@@ -23,11 +24,17 @@ h1 {
 .tile {
 	height: 9.5vh;
 	width: 9.5vh;
-	background: lightgreen;
-	border: black solid 0.5vh;
+	background: green;
+	border: black solid 3px;
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .token {
 	border-radius: 8vh;
-	border: solid black 1px;
+	width: 8vh;
+	height: 8vh;
+	border: solid black 3px;
+	margin: 0 auto;
 }
