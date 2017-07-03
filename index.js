@@ -57,6 +57,7 @@ function indices(arr1, arr2 = []) {
 	return result
 }
 
+// Returns a copy of an array
 function copyArray(arr) {
 	return arr.map(function(x) {
 		return Array.isArray(x) ? copyArray(x) : x
@@ -95,7 +96,8 @@ function nextInLine(position, direction) {
 function validRow(position, direction, player) {
 	var row = [position]
 	var next = nextInLine(position, direction)
-	if (readBoard(next) != ' ' && readBoard(next) != false && readBoard(next) != player) {
+	var next_is = readBoard(next)
+	if (readBoard(position) == ' ' && next_is != ' ' && next_is != false && next_is != player) {
 		row.push(next)
 		var valid = function() {
 			next = nextInLine(next, direction)
@@ -213,7 +215,7 @@ function drawBoard() {
 	}
 }
 
-// Clears the board from #game
+// Clears the board from #game.
 function clearBoard() {
 	var previous_board = document.querySelectorAll('.row')
 	for (var n = 0; n < previous_board.length; n++) {
@@ -223,7 +225,7 @@ function clearBoard() {
 
 // Cycles functions until a winner is declared.
 function turn() {
-	if (winner()) {
+	if (winner() == false) {
 		console.log(winner())
 	} else {
 		validMoves(PLAYERS[CURRENT]).map(function(x) {
