@@ -1,4 +1,4 @@
-// GLOBAL VARIABLES:
+// GLOBAL VARIABLES AND CONSTANTS:
 var DIRECTIONS = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 var PLAYERS = ['B', 'W'];
 var CURRENT = 0; // The current player.
@@ -40,6 +40,8 @@ const TIE_BOARD = [
 	new Array(8).fill('W'),
 	new Array(8).fill('W')
 ];
+
+const GAME_OPTIONS = document.getElementById('game-options')
 
 // FUNCTIONS FOR MANAGING THE GAME:
 
@@ -173,6 +175,7 @@ function winner() {
 // FUNCTIONS FOR DISPLAY AND USER INPUT:
 // Starts game
 function start() {
+	GAME_OPTIONS.style.display = 'none'
 	newBoard()
 	drawBoard()
 	TURN_HISTORY.push([copyArray(BOARD), CURRENT])
