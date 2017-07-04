@@ -184,8 +184,8 @@ function start() {
 }
 
 // Gets selected options.
-function options(option) {
-	var e = document.getElementById(option)
+function opt(x) {
+	var e = document.getElementById(x)
 	return e.options[e.selectedIndex].value
 }
 
@@ -236,9 +236,9 @@ function turn() {
 	if (winner() !== false) { // If there is a winner
 		winDisplay()
 	} else if (validMoves(PLAYERS[CURRENT])) { // If the current player can make a move.
-		if (options('players') == '2' || options('human') == CURRENT.toString()) { // If it is a humans turn.
+		if (opt('players') == '2' || opt('human') == CURRENT.toString()) { // If it is a humans turn.
 			validMoves(PLAYERS[CURRENT]).map(function(x) {
-				if (options('highlight') == 1) {
+				if (opt('highlight') == 1) {
 					addHighlighting(x[0][0], 'yellow')
 				}
 				toSel(x[0][0]).addEventListener('click', function(event) {
@@ -250,7 +250,7 @@ function turn() {
 				})
 			})
 		} else { // If it is the AIs turn
-			switch(options('ai')) {
+			switch(opt('ai')) {
 				case '0':
 					randomMove()
 					break
@@ -279,7 +279,7 @@ function winDisplay() {
 	
 	if (winner() == "T") {
 		message.innerHTML = 'Tie'
-	} else if (winner() == 'B') {
+	} else if (PLAYERS[winner()] == 'B') {
 		message.innerHTML = 'Black Wins'
 	} else {
 		message.innerHTML = 'White Wins'
@@ -345,6 +345,18 @@ function mostTokensMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[C
 		return net_tokens[i] === max_tokens
 	})
 	randomMove(max_moves, player)
+}
+
+function hideOptions() {
+	var ai = document.getElementById('ai').parentElement
+	var human = document.getElementById('human').parentElement
+	if (opt('players') == '1') {
+		ai.style.display = ''
+		human.style.display = ''
+	} else {
+		ai.style.display = 'none'
+		human.style.display = 'none'
+	}
 }
 
 // TODO: Hide unavailable options.
