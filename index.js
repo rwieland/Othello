@@ -75,19 +75,19 @@ function newBoard(arr = STANDARD_BOARD) {
 }
 
 // Logs the BOARD in the console.
-function consoleLogBoard() {
+function consoleLogBoard(arr = BOARD) {
 	console.log('  0 1 2 3 4 5 6 7')
-	BOARD.map(function(x, i) {console.log(i + '|' + x.join('|') + '|')})
+	arr.map(function(x, i) {console.log(i + '|' + x.join('|') + '|')})
 }
 
 // Returns a position if it is on the BOARD.
-function checkBoard(position) {
-	return BOARD[position[0]] ? BOARD[position[0]][position[1]] ? position : false : false
+function checkBoard(position, arr = BOARD) {
+	return arr[position[0]] ? arr[position[0]][position[1]] ? position : false : false
 }
 
 // Returns the value at a BOARD position if it exists.
-function readBoard(position) {
-	return checkBoard(position) ? BOARD[position[0]][position[1]] : false
+function readBoard(position, arr = BOARD) {
+	return checkBoard(position) ? arr[position[0]][position[1]] : false
 }
 
 // Returns the next position in a certain direction.
@@ -179,7 +179,7 @@ function start() {
 	GAME_OPTIONS.style.display = 'none'
 	newBoard()
 	drawBoard()
-	TURN_HISTORY.push([copyArray(BOARD), CURRENT])
+	TURN_HISTORY = [[copyArray(BOARD), CURRENT]]
 	turn()	
 }
 
@@ -200,24 +200,28 @@ function toPos(sel) {
 }
 
 // Draws the state of the BOARD.
-function drawBoard() {
+function drawBoard(arr = BOARD) {
 	clearBoard()
+	scoreboard()
+	GAME.style.backgroundColor = 'black'
 	var game = document.querySelector('#game')
-	for (var i = 0; i < BOARD.length; i++) {
+	for (var i = 0; i < arr.length; i++) {
 		var row = document.createElement('div')
 		row.className = 'row'
-		for (var j = 0; j < BOARD[i].length; j++) {
+		for (var j = 0; j < arr[i].length; j++) {
+			var tile_border = document.createElement('div')
 			var tile = document.createElement('div')
+			tile_border.className = 'tile-border'
 			tile.className = 'tile'
 			tile.id = `t${i}${j}`
-			if (readBoard([i,j]) != ' ') {
+			if (readBoard([i,j], arr) != ' ') {
 				var token = document.createElement('div')
 				token.className = 'token'
-				token.style.background = COLORS[readBoard([i,j])]
+				token.style.background = COLORS[readBoard([i,j], arr)]
 				tile.appendChild(token)
 			}
-			row.appendChild(tile)
-	
+			tile_border.appendChild(tile)
+			row.appendChild(tile_border)	
 		}
 		game.appendChild(row)
 	}
@@ -239,7 +243,6 @@ function clearBoard() {
 
 // Cycles functions until a winner is declared.
 function turn() {
-	scoreboard()
 	if (winner() !== false) { // If there is a winner
 		winDisplay()
 	} else if (validMoves(PLAYERS[CURRENT])) { // If the current player can make a move.
@@ -289,8 +292,10 @@ function winDisplay() {
 		message.innerHTML = 'Tie'
 	} else if (PLAYERS[winner()] == 'B') {
 		message.innerHTML = 'Black Wins'
-	} else {
+	} else if (PLAYERS[winner()] == 'W') {
 		message.innerHTML = 'White Wins'
+	} else {
+		message.innerHTML = 'Indecisive'
 	}
 	
 	reset_button.innerHTML = 'New Game'
@@ -300,8 +305,12 @@ function winDisplay() {
 	}
 	
 	replay_button.innerHTML = 'View Game'
-	// TODO: Implement replay.
+	replay_button.onclick = function() {
+		replay()
+		win_display.remove()
+	}
 	
+	GAME.style.backgroundColor = 'gray'
 	GAME.appendChild(win_display)
 }
 
@@ -317,6 +326,84 @@ function undoTurn() {
 // Highlights tiles a color.
 function addHighlighting(position, color) {
 	toSel(position).style.background = color
+}
+
+// Console logs the turn history.
+function consoleLogTurnHistory() {
+	TURN_HISTORY.map(function(x) {consoleLogBoard(x[0])})
+}
+
+function replay() {
+	var replay_menu = document.createElement('div')
+	var first = document.createElement('button')
+	var previous = document.createElement('button')
+	var done = document.createElement('button')
+	var next = document.createElement('button')
+	var last = document.createElement('button')
+	
+	document.body.appendChild(replay_menu)
+	replay_menu.appendChild(first)
+	replay_menu.appendChild(previous)
+	replay_menu.appendChild(done)
+	replay_menu.appendChild(next)
+	replay_menu.appendChild(last)
+	
+	replay_menu.style.textAlign = 'center'
+	var turn = 0
+	
+	first.innerHTML = '<<'
+	first.onclick = function() {
+		turn = 0
+		first.style.display = 'none'
+		previous.style.display = 'none'
+		next.style.display = ''
+		last.style.display = ''
+		drawBoard(TURN_HISTORY[turn][0])
+	}
+	first.style.display = 'none'
+	
+	previous.innerHTML = '<'
+	previous.onclick = function() {
+		turn -= 1
+		if (turn <= 0) {
+			first.style.display = 'none'
+			previous.style.display = 'none'
+		}
+		next.style.display = ''
+		last.style.display = ''
+		drawBoard(TURN_HISTORY[turn][0])
+	}	
+	previous.style.display = 'none'
+	
+	done.innerHTML = 'Done'
+	done.onclick = function() {
+		winDisplay()
+		replay_menu.remove()
+	}
+	
+	next.innerHTML = '>'
+	next.onclick = function() {
+		turn += 1
+		first.style.display = ''
+		previous.style.display = ''
+		if (turn >= TURN_HISTORY.length - 1) {
+			next.style.display = 'none'
+			last.style.display = 'none'
+		}
+		drawBoard(TURN_HISTORY[turn][0])
+	}	
+	
+	last.innerHTML = '>>'
+	last.onclick = function() {
+		turn = TURN_HISTORY.length - 1
+		first.style.display = ''
+		previous.style.display = ''
+		next.style.display = 'none'
+		last.style.display = 'none'
+		drawBoard(TURN_HISTORY[turn][0])
+	}
+	
+	drawBoard(TURN_HISTORY[turn][0])
 }
 
 // FUNCTIONS FOR DUMB 'AI'
@@ -368,7 +455,7 @@ function hideOptions() {
 	}
 }
 
-// TODO: Add replay.
+// TODO: Add replay. (Make display functions accept board arguments)
 // TODO: Make prettier interface.
 // TODO: Smarter AI.
 // TODO: Add more dimensions.
