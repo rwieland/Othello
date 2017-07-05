@@ -67,7 +67,18 @@ function copyArray(arr) {
 	})
 }
 
+// Sets directions for n dimensions
+function setDirections(n) {
+	var d = new Array(3)
+	for (var i = 1; i < n; i++) {
+		d = new Array(3).fill(d)
+	}
+	d = indices(d).map(function(x) {return x.map(function(y) {return y - 1})})
+	return DIRECTIONS = d.filter(function(x) {return !x.every(function(y) {return y == 0})}) 
+}
+
 // Sets BOARD to standard starting positions.
+// TODO: UPDATE FOR N DIMENSIONS
 function newBoard(arr = STANDARD_BOARD) {
 	BOARD = copyArray(arr)
 	POSITIONS = indices(BOARD)
@@ -75,22 +86,26 @@ function newBoard(arr = STANDARD_BOARD) {
 }
 
 // Logs the BOARD in the console.
+// TODO: UPDATE FOR N DIMENSIONS
 function consoleLogBoard(arr = BOARD) {
 	console.log('  0 1 2 3 4 5 6 7')
 	arr.map(function(x, i) {console.log(i + '|' + x.join('|') + '|')})
 }
 
 // Returns a position if it is on the BOARD.
+// TODO: UPDATE FOR N DIMENSIONS
 function checkBoard(position, arr = BOARD) {
 	return arr[position[0]] ? arr[position[0]][position[1]] ? position : false : false
 }
 
 // Returns the value at a BOARD position if it exists.
+// TODO: UPDATE FOR N DIMENSIONS
 function readBoard(position, arr = BOARD) {
 	return checkBoard(position) ? arr[position[0]][position[1]] : false
 }
 
 // Returns the next position in a certain direction.
+// TODO: UPDATE FOR N DIMENSIONS
 function nextInLine(position, direction) {
 	return checkBoard([position[0] + direction[0], position[1] + direction[1]])
 }
@@ -139,6 +154,7 @@ function validMoves(player) {
 }
 
 // Executes a move by the CURRENT at a certain position.
+// TODO: UPDATE FOR N DIMENSIONS
 function move(position, player) {
 	validMove(position, player).map(function(x) {
 		x.map(function(y) {
@@ -153,6 +169,7 @@ function nextPlayer() {
 }
 
 // Returns a count of tokens by PLAYERS on the BOARD.
+// TODO: UPDATE FOR N DIMENSIONS
 function tokenCount() {
 	var merged = [].concat.apply([], BOARD) //
 	COUNT = PLAYERS.map(function(player) {
@@ -175,6 +192,7 @@ function winner() {
 
 // FUNCTIONS FOR DISPLAY AND USER INPUT:
 // Starts game
+// TODO: UPDATE FOR N DIMENSIONS
 function start() {
 	GAME_OPTIONS.style.display = 'none'
 	newBoard()
@@ -190,16 +208,19 @@ function opt(x) {
 }
 
 // Converts a position to an html selection.
+// TODO: UPDATE FOR N DIMENSIONS
 function toSel(position) {
 	return document.getElementById(`t${position[0]}${position[1]}`)
 }
 
 // Converts a selected id to a position.
+// TODO: UPDATE FOR N DIMENSIONS
 function toPos(sel) {
 	return sel.id.split('').slice(1).map(function(x) {return parseInt(x)})
 }
 
 // Draws the state of the BOARD.
+// TODO: UPDATE FOR N DIMENSIONS
 function drawBoard(arr = BOARD) {
 	clearBoard()
 	scoreboard()
@@ -242,6 +263,7 @@ function clearBoard() {
 }
 
 // Cycles functions until a winner is declared.
+// TODO: UPDATE FOR N DIMENSIONS
 function turn() {
 	if (winner() !== false) { // If there is a winner
 		winDisplay()
@@ -329,6 +351,7 @@ function addHighlighting(position, color) {
 }
 
 // Console logs the turn history.
+// TODO: UPDATE FOR N DIMENSIONS
 function consoleLogTurnHistory() {
 	TURN_HISTORY.map(function(x) {consoleLogBoard(x[0])})
 }
@@ -455,7 +478,21 @@ function hideOptions() {
 	}
 }
 
-// TODO: Add replay. (Make display functions accept board arguments)
 // TODO: Make prettier interface.
 // TODO: Smarter AI.
 // TODO: Add more dimensions.
+/* FUNCTIONS TO UPDATE FOR N DIMENSIONS:
+	- newBoard
+	- consoleLogBoard
+	- checkBoard
+	- readBoard
+	- nextInLine
+	- move
+	- tokenCount
+	- start
+	- toSel
+	- toPos
+	- drawBoard
+	- turn
+	- consoleLogTurnHistory
+*/
