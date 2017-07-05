@@ -202,6 +202,7 @@ function toPos(sel) {
 // Draws the state of the BOARD.
 function drawBoard() {
 	clearBoard()
+	var game = document.querySelector('#game')
 	for (var i = 0; i < BOARD.length; i++) {
 		var row = document.createElement('div')
 		row.className = 'row'
@@ -218,9 +219,14 @@ function drawBoard() {
 			row.appendChild(tile)
 	
 		}
-		var game = document.querySelector('#game')
 		game.appendChild(row)
 	}
+}
+
+// Displays current scores.
+function scoreboard() {
+	var scoreboard = document.getElementById('scoreboard').firstChild
+	scoreboard.innerHTML = `B: ${tokenCount()[0]} W: ${tokenCount()[1]}`	
 }
 
 // Clears the board from #game.
@@ -233,6 +239,7 @@ function clearBoard() {
 
 // Cycles functions until a winner is declared.
 function turn() {
+	scoreboard()
 	if (winner() !== false) { // If there is a winner
 		winDisplay()
 	} else if (validMoves(PLAYERS[CURRENT])) { // If the current player can make a move.
@@ -266,6 +273,7 @@ function turn() {
 	}
 }
 
+// Creates display upon someone winning the game.
 function winDisplay() {
 	clearBoard()
 	win_display = document.createElement('div')
@@ -347,6 +355,7 @@ function mostTokensMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[C
 	randomMove(max_moves, player)
 }
 
+// Hides AI options from the options menu when playing 2 player.
 function hideOptions() {
 	var ai = document.getElementById('ai').parentElement
 	var human = document.getElementById('human').parentElement
@@ -359,9 +368,7 @@ function hideOptions() {
 	}
 }
 
-// TODO: Hide unavailable options.
 // TODO: Add replay.
-// TODO: Display current token count.
 // TODO: Make prettier interface.
 // TODO: Smarter AI.
 // TODO: Add more dimensions.
