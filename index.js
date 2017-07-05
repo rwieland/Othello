@@ -7,6 +7,7 @@ var POSITIONS = [];
 var COUNT = []; // Token count
 var COLORS = {'B': 'black', 'W': 'white'}
 var TURN_HISTORY = []
+var DISPLAY_DIMENSIONS = ['x', 'y']
 
 const STANDARD_BOARD = [
 	new Array(8).fill(' '),
@@ -87,9 +88,32 @@ function newBoard(arr = STANDARD_BOARD) {
 
 // Logs the BOARD in the console.
 // TODO: UPDATE FOR N DIMENSIONS
-function consoleLogBoard(arr = BOARD) {
+
+// Converts an n dimensional board to two dimensions.
+function toTwoDimensions(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
+	var row_index = disp.indexOf('x')
+	var column_index = disp.indexOf('y')
+	var filtered_indices = indices(arr).filter(function(x) { // Filters indices into desired dimensions
+		return x.every(function(y, i) {
+			return !Number.isInteger(disp[i]) || y == disp[i]
+		})
+	})
+	
+	var result = []
+	for (var i = 0; i < 8; i++) { // Sorts filtered indices into a 2d array.
+		var row = filtered_indices.filter(function(x) {
+			return x[row_index] == i
+		})
+		row.sort(function(a, b) {return a[column_index] - b[column_index]})
+		result.push(row)
+	}
+	return result.map(function(x) {return x.map(function(y) {return readBoard(y)})}) // Translates index to value
+}
+
+function consoleLogBoard(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
+	narr = toTwoDimensions(arr, disp)
 	console.log('  0 1 2 3 4 5 6 7')
-	arr.map(function(x, i) {console.log(i + '|' + x.join('|') + '|')})
+	narr.map(function(x, i) {console.log(i + '|' + x.join('|') + '|')})
 }
 
 // Returns a position if it is on the BOARD.
@@ -209,11 +233,10 @@ function opt(x) {
 // Converts a position to an html selection.
 // TODO: UPDATE FOR N DIMENSIONS
 function toSel(position) {
-	return document.getElementById(`t${position[0]}${position[1]}`)
+	return document.getElementById('t' + position.join(''))
 }
 
 // Converts a selected id to a position.
-// TODO: UPDATE FOR N DIMENSIONS
 function toPos(sel) {
 	return sel.id.split('').slice(1).map(function(x) {return parseInt(x)})
 }
@@ -483,9 +506,6 @@ function hideOptions() {
 /* FUNCTIONS TO UPDATE FOR N DIMENSIONS:
 	- newBoard
 	- consoleLogBoard
-	- checkBoard
-	- readBoard
-	- nextInLine
 	- move
 	- tokenCount
 	- start
