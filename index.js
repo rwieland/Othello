@@ -93,21 +93,20 @@ function consoleLogBoard(arr = BOARD) {
 }
 
 // Returns a position if it is on the BOARD.
-// TODO: UPDATE FOR N DIMENSIONS
 function checkBoard(position, arr = BOARD) {
-	return arr[position[0]] ? arr[position[0]][position[1]] ? position : false : false
+	var x = arr[position[0]]
+	return x == undefined ? false : Array.isArray(x) ? checkBoard(position.slice(1), x) ? position : false : position
 }
 
 // Returns the value at a BOARD position if it exists.
-// TODO: UPDATE FOR N DIMENSIONS
 function readBoard(position, arr = BOARD) {
-	return checkBoard(position) ? arr[position[0]][position[1]] : false
+	var x = arr[position[0]]
+	return x == undefined ? false : Array.isArray(x) ? readBoard(position.slice(1), x) : x
 }
 
 // Returns the next position in a certain direction.
-// TODO: UPDATE FOR N DIMENSIONS
-function nextInLine(position, direction) {
-	return checkBoard([position[0] + direction[0], position[1] + direction[1]])
+function nextInLine(position, direction, arr = BOARD) {	
+	return checkBoard(position.map(function(x,i) {return x + direction[i]}), arr)
 }
 
 // Returns a row if it is valid for user input.
