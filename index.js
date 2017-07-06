@@ -80,16 +80,41 @@ function setDirections(n) {
 
 // Sets BOARD to standard starting positions.
 // TODO: UPDATE FOR N DIMENSIONS
-function newBoard(arr = STANDARD_BOARD) {
-	BOARD = copyArray(arr)
+function newBoard(n = 2) {
+	BOARD = new Array(8).fill(' ') // Preliminary determination of board shape to set POSITIONS.
+	var c = 1
+	while (c < n) {
+		BOARD = new Array(8).fill(copyArray(BOARD))
+		c++
+	}
 	POSITIONS = indices(BOARD)
-	return BOARD
+	var starting_positions = POSITIONS.map(function(x) { // Returns an 1d array of what each position should be.
+		if (x.every(function(y) {return y == 3 || y == 4})) { // If a position should have a token.
+			var i = x.reduce(function(a, b) { // Determines if a position should be W or B.
+				return b == 4 ? a + 1 : a			
+			}, 0)
+			return i % 2 == 0 ? 'B' : 'W'
+		} else { // If a position should be blank.
+			return ' '
+		}
+
+	})
+	
+	while (starting_positions.length > 8) { // Converts starting positions into correct shape of board.
+		var n_rows = starting_positions.length / 8
+		var new_board = []
+		for (var i = 0; i < n_rows; i++) {
+			var new_row = starting_positions.slice(i * 8, (i + 1) * 8)
+			new_board.push(new_row)
+		}
+		starting_positions = new_board
+	}
+	
+	DISPLAY_DIMENSIONS = ['x', 'y'].concat(new Array(n - 2).fill(3)) // Set display dimensions to work for n dimensions
+	return BOARD = copyArray(starting_positions)
 }
 
-// Logs the BOARD in the console.
-// TODO: UPDATE FOR N DIMENSIONS
-
-// Converts an n dimensional board to two dimensions.
+// Converts an n dimensional board to two dimensions for display.
 function toTwoDimensions(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
 	var row_index = disp.indexOf('x')
 	var column_index = disp.indexOf('y')
@@ -110,6 +135,7 @@ function toTwoDimensions(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
 	return result.map(function(x) {return x.map(function(y) {return readBoard(y)})}) // Translates index to value
 }
 
+// Logs the BOARD in the console.
 function consoleLogBoard(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
 	narr = toTwoDimensions(arr, disp)
 	console.log('  0 1 2 3 4 5 6 7')
