@@ -68,6 +68,14 @@ function copyArray(arr) {
 	})
 }
 
+
+// Updates an array at a position to a value.
+function updatePosition(arr, position, value) {
+	return arr.map(function(x, i) {
+		return i == position[0] ? Array.isArray(x) ? updatePosition(x, position.slice(1), value) : value : x
+	})
+}
+
 // Sets directions for n dimensions
 function setDirections(n) {
 	var d = new Array(3)
@@ -88,30 +96,17 @@ function newBoard(n = 2) {
 		c++
 	}
 	POSITIONS = indices(BOARD)
-	var starting_positions = POSITIONS.map(function(x) { // Returns an 1d array of what each position should be.
+	POSITIONS.forEach(function(x) {
 		if (x.every(function(y) {return y == 3 || y == 4})) { // If a position should have a token.
 			var i = x.reduce(function(a, b) { // Determines if a position should be W or B.
 				return b == 4 ? a + 1 : a			
 			}, 0)
-			return i % 2 == 0 ? 'B' : 'W'
-		} else { // If a position should be blank.
-			return ' '
+			i % 2 == 0 ? BOARD = updatePosition(BOARD, x, 'B') : BOARD = updatePosition(BOARD, x, 'W')
 		}
-
 	})
 	
-	while (starting_positions.length > 8) { // Converts starting positions into correct shape of board.
-		var n_rows = starting_positions.length / 8
-		var new_board = []
-		for (var i = 0; i < n_rows; i++) {
-			var new_row = starting_positions.slice(i * 8, (i + 1) * 8)
-			new_board.push(new_row)
-		}
-		starting_positions = new_board
-	}
-	
 	DISPLAY_DIMENSIONS = ['x', 'y'].concat(new Array(n - 2).fill(3)) // Set display dimensions to work for n dimensions
-	return BOARD = copyArray(starting_positions)
+	return BOARD
 }
 
 // Converts an n dimensional board to two dimensions for display.
@@ -203,11 +198,10 @@ function validMoves(player) {
 }
 
 // Executes a move by the CURRENT at a certain position.
-// TODO: UPDATE FOR N DIMENSIONS
 function move(position, player) {
-	validMove(position, player).map(function(x) {
-		x.map(function(y) {
-			BOARD[y[0]][y[1]] = player
+	validMove(position, player).forEach(function(x) {
+		x.forEach(function(y) {
+			BOARD = updatePosition(BOARD, y, player)
 		})
 	})
 }
@@ -244,6 +238,7 @@ function winner() {
 // TODO: UPDATE FOR N DIMENSIONS
 function start() {
 	GAME_OPTIONS.style.display = 'none'
+	CURRENT = 0
 	newBoard()
 	drawBoard()
 	TURN_HISTORY = [[copyArray(BOARD), CURRENT]]
@@ -530,8 +525,6 @@ function hideOptions() {
 // TODO: Smarter AI.
 // TODO: Add more dimensions.
 /* FUNCTIONS TO UPDATE FOR N DIMENSIONS:
-	- newBoard
-	- consoleLogBoard
 	- move
 	- tokenCount
 	- start
