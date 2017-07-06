@@ -252,7 +252,6 @@ function opt(x) {
 }
 
 // Converts a position to an html selection.
-// TODO: UPDATE FOR N DIMENSIONS
 function toSel(position) {
 	return document.getElementById('t' + position.join(''))
 }
@@ -395,9 +394,10 @@ function addHighlighting(position, color) {
 
 // Console logs the turn history.
 // TODO: UPDATE FOR N DIMENSIONS
-function consoleLogTurnHistory() {
-	TURN_HISTORY.map(function(x) {consoleLogBoard(x[0])})
+function consoleLogTurnHistory(disp = DISPLAY_DIMENSIONS) {
+	TURN_HISTORY.forEach(function(x) {consoleLogBoard(x[0], disp)})
 }
+
 
 function replay() {
 	var replay_menu = document.createElement('div')
@@ -420,26 +420,16 @@ function replay() {
 	first.innerHTML = '<<'
 	first.onclick = function() {
 		turn = 0
-		first.style.display = 'none'
-		previous.style.display = 'none'
-		next.style.display = ''
-		last.style.display = ''
 		drawBoard(TURN_HISTORY[turn][0])
 	}
-	first.style.display = 'none'
 	
 	previous.innerHTML = '<'
 	previous.onclick = function() {
-		turn -= 1
-		if (turn <= 0) {
-			first.style.display = 'none'
-			previous.style.display = 'none'
+		if (turn > 0) {
+			turn -= 1
 		}
-		next.style.display = ''
-		last.style.display = ''
 		drawBoard(TURN_HISTORY[turn][0])
-	}	
-	previous.style.display = 'none'
+	}
 	
 	done.innerHTML = 'Done'
 	done.onclick = function() {
@@ -449,12 +439,8 @@ function replay() {
 	
 	next.innerHTML = '>'
 	next.onclick = function() {
-		turn += 1
-		first.style.display = ''
-		previous.style.display = ''
-		if (turn >= TURN_HISTORY.length - 1) {
-			next.style.display = 'none'
-			last.style.display = 'none'
+		if (turn < TURN_HISTORY.length - 1) {
+			turn += 1
 		}
 		drawBoard(TURN_HISTORY[turn][0])
 	}	
@@ -462,10 +448,6 @@ function replay() {
 	last.innerHTML = '>>'
 	last.onclick = function() {
 		turn = TURN_HISTORY.length - 1
-		first.style.display = ''
-		previous.style.display = ''
-		next.style.display = 'none'
-		last.style.display = 'none'
 		drawBoard(TURN_HISTORY[turn][0])
 	}
 	
@@ -523,14 +505,12 @@ function hideOptions() {
 
 // TODO: Make prettier interface.
 // TODO: Smarter AI.
+// TODO: Fix token count/scoreboard during replay so that it displays the correct score for that turn.
 // TODO: Add more dimensions.
 /* FUNCTIONS TO UPDATE FOR N DIMENSIONS:
-	- move
 	- tokenCount
 	- start
-	- toSel
-	- toPos
 	- drawBoard
 	- turn
-	- consoleLogTurnHistory
+	- consoleLogTurnHistory (displays current state of the board)
 */
