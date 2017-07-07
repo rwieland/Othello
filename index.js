@@ -5,9 +5,10 @@ var CURRENT = 0; // The current player.
 var BOARD = [];
 var POSITIONS = [];
 var COUNT = []; // Token count
-var COLORS = {'B': 'black', 'W': 'white'}
-var TURN_HISTORY = []
-var DISPLAY_DIMENSIONS = ['x', 'y']
+var COLORS = {'B': 'black', 'W': 'white'};
+var TURN_HISTORY = [];
+var DISPLAY_DIMENSIONS = ['x', 'y'];
+var LAST_AI_MOVES = [];
 
 const STANDARD_BOARD = [
 	new Array(8).fill(' '),
@@ -87,7 +88,6 @@ function setDirections(n) {
 }
 
 // Sets BOARD to standard starting positions.
-// TODO: UPDATE FOR N DIMENSIONS
 function newBoard(n = 2) {
 	BOARD = new Array(8).fill(' ') // Preliminary determination of board shape to set POSITIONS.
 	var c = 1
@@ -105,6 +105,7 @@ function newBoard(n = 2) {
 		}
 	})
 	
+	setDirections(n)
 	DISPLAY_DIMENSIONS = ['x', 'y'].concat(new Array(n - 2).fill(3)) // Set display dimensions to work for n dimensions
 	return BOARD
 }
@@ -127,12 +128,12 @@ function toTwoDimensions(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
 		row.sort(function(a, b) {return a[column_index] - b[column_index]})
 		result.push(row)
 	}
-	return result.map(function(x) {return x.map(function(y) {return readBoard(y)})}) // Translates index to value
+	return result
 }
 
 // Logs the BOARD in the console.
 function consoleLogBoard(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
-	narr = toTwoDimensions(arr, disp)
+	narr = toTwoDimensions(arr, disp).map(function(x) {return x.map(function(y) {return readBoard(y)})}) // Translates index to value
 	console.log('  0 1 2 3 4 5 6 7')
 	narr.map(function(x, i) {console.log(i + '|' + x.join('|') + '|')})
 }
@@ -212,7 +213,6 @@ function nextPlayer() {
 }
 
 // Returns a count of tokens by PLAYERS on the BOARD.
-// TODO: UPDATE FOR N DIMENSIONS
 function tokenCount() {
 	var merged = BOARD.join().split(',') //
 	COUNT = PLAYERS.map(function(player) {
@@ -235,14 +235,25 @@ function winner() {
 
 // FUNCTIONS FOR DISPLAY AND USER INPUT:
 // Starts game
-// TODO: UPDATE FOR N DIMENSIONS
 function start() {
-	GAME_OPTIONS.style.display = 'none'
-	CURRENT = 0
-	newBoard()
-	drawBoard()
-	TURN_HISTORY = [[copyArray(BOARD), CURRENT]]
-	turn()	
+	var dim = parseInt(document.getElementById('dimensions-option').value, 10)
+	if (isNaN(dim) || dim < 2) {
+		alert('There must be at least two dimensions')
+	} else {
+		GAME_OPTIONS.style.display = 'none'
+		CURRENT = 0
+		newBoard(dim)
+		drawBoard()
+		TURN_HISTORY = [[copyArray(BOARD), CURRENT]]
+		turn()
+		if (dim > 2) {
+			changeViewPlane(dim)
+		}
+	}
+}
+
+function changeViewPlane(dim) {
+	
 }
 
 // Gets selected options.
@@ -262,32 +273,32 @@ function toPos(sel) {
 }
 
 // Draws the state of the BOARD.
-// TODO: UPDATE FOR N DIMENSIONS
-function drawBoard(arr = BOARD) {
+function drawBoard(arr = BOARD, dim = DISPLAY_DIMENSIONS) {
 	clearBoard()
 	scoreboard()
 	GAME.style.backgroundColor = 'black'
+	var display_board = toTwoDimensions(arr, dim)
 	var game = document.querySelector('#game')
-	for (var i = 0; i < arr.length; i++) {
+	display_board.forEach(function(x) {
 		var row = document.createElement('div')
 		row.className = 'row'
-		for (var j = 0; j < arr[i].length; j++) {
+		x.forEach(function(y) {
 			var tile_border = document.createElement('div')
 			var tile = document.createElement('div')
 			tile_border.className = 'tile-border'
 			tile.className = 'tile'
-			tile.id = `t${i}${j}`
-			if (readBoard([i,j], arr) != ' ') {
+			tile.id = 't' + y.join('')
+			if (readBoard(y, arr) != ' ') {
 				var token = document.createElement('div')
 				token.className = 'token'
-				token.style.background = COLORS[readBoard([i,j], arr)]
+				token.style.background = COLORS[readBoard(y, arr)]
 				tile.appendChild(token)
 			}
 			tile_border.appendChild(tile)
 			row.appendChild(tile_border)	
-		}
+		})
 		game.appendChild(row)
-	}
+	})
 }
 
 // Displays current scores.
@@ -311,17 +322,19 @@ function turn() {
 		winDisplay()
 	} else if (validMoves(PLAYERS[CURRENT])) { // If the current player can make a move.
 		if (opt('players') == '2' || opt('human') == CURRENT.toString()) { // If it is a humans turn.
-			validMoves(PLAYERS[CURRENT]).map(function(x) {
-				if (opt('highlight') == 1) {
-					addHighlighting(x[0][0], 'yellow')
+			validMoves(PLAYERS[CURRENT]).forEach(function(x) {				
+				if (toSel(x[0][0])) {
+					if (opt('highlight') == 1) {
+						addHighlighting(x[0][0], 'yellow')
+					}
+					toSel(x[0][0]).addEventListener('click', function(event) {
+						move(toPos(event.target), PLAYERS[CURRENT])
+						drawBoard()
+						nextPlayer()
+						TURN_HISTORY.push([copyArray(BOARD), CURRENT])
+						turn()
+					})
 				}
-				toSel(x[0][0]).addEventListener('click', function(event) {
-					move(toPos(event.target), PLAYERS[CURRENT])
-					drawBoard()
-					nextPlayer()
-					TURN_HISTORY.push([copyArray(BOARD), CURRENT])
-					turn()
-				})
 			})
 		} else { // If it is the AIs turn
 			switch(opt('ai')) {
@@ -390,6 +403,16 @@ function undoTurn() {
 // Highlights tiles a color.
 function addHighlighting(position, color) {
 	toSel(position).style.background = color
+}
+
+function highlightLastAIMoves() {
+	LAST_AI_MOVES.forEach(function(x, i) {
+		x.forEach(function(y, j) {
+			if (toSel(y)) {
+				i == 0 && j == 0 ? addHighlighting(y, 'red') : addHighlighting(y, 'pink')
+			}
+		})
+	})
 }
 
 // Console logs the turn history.
@@ -461,12 +484,8 @@ function randomMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CURRE
 	var i = Math.floor(Math.random() * moves.length)
 	move(moves[i][0][0], player)
 	drawBoard()
-	moves[i].map(function(x) {
-		x.map(function(y) {
-			addHighlighting(y, 'pink')
-		})
-	})
-	addHighlighting(moves[i][0][0], 'red')
+	LAST_AI_MOVES = moves[i]
+	highlightLastAIMoves()
 	nextPlayer()	
 	TURN_HISTORY.push([copyArray(BOARD), CURRENT])
 	turn()
@@ -508,9 +527,6 @@ function hideOptions() {
 // TODO: Fix token count/scoreboard during replay so that it displays the correct score for that turn.
 // TODO: Add more dimensions.
 /* FUNCTIONS TO UPDATE FOR N DIMENSIONS:
-	- tokenCount
-	- start
-	- drawBoard
-	- turn
+	- changeViewPlane
 	- consoleLogTurnHistory (displays current state of the board)
 */
