@@ -214,7 +214,7 @@ function nextPlayer() {
 // Returns a count of tokens by PLAYERS on the BOARD.
 // TODO: UPDATE FOR N DIMENSIONS
 function tokenCount() {
-	var merged = [].concat.apply([], BOARD) //
+	var merged = BOARD.join().split(',') //
 	COUNT = PLAYERS.map(function(player) {
 		var count = 0;
 		for (var i = 0; i < merged.length; i++) {
