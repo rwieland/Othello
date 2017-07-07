@@ -253,7 +253,63 @@ function start() {
 }
 
 function changeViewPlane(dim) {
+	var container = document.createElement('div')
+	var menu = document.createElement('ul')
+	var go_button = document.createElement('button')
+	container.appendChild(menu)
+	container.appendChild(go_button)
+	document.body.appendChild(container)
 	
+	for (var i = 0; i < dim; i++) {
+		var list_element = document.createElement('li')
+		var box = document.createElement('textarea')
+		var x = DISPLAY_DIMENSIONS[i]
+		
+		box.value = isNaN(parseInt(x)) ? x : parseInt(x) + 1
+		box.id = 'd' + (i + 1)
+		box.rows = 1
+		box.cols = 3
+		list_element.innerHTML = 'D' + (i + 1) + ': '
+		
+		list_element.appendChild(box)
+		menu.appendChild(list_element)
+	}
+
+	go_button.innerHTML = 'Go'
+	go_button.addEventListener('click', function(event) {
+		var input_plane = []
+		var text_areas = menu.querySelectorAll('textarea')
+		text_areas.forEach(function(x) {input_plane.push(x.value)})
+		
+		var x_found = false
+		var y_found = false
+		var valid_input = true
+		input_plane.forEach(function(i) {
+			if (i == 'x') {
+				x_found ? valid_input = false : x_found = true
+			} else if (i == 'y') {
+				y_found ? valid_input = false : y_found = true
+			} else if (isNaN(parseInt(i)) || parseInt(i) > 8 || parseInt(i) < 1) {
+				valid_input = false 
+			}
+		})	
+		
+		if (valid_input) {
+			DISPLAY_DIMENSIONS = input_plane.map(function(x) {
+				return isNaN(parseInt(x)) ? x : parseInt(x) - 1
+			})
+			drawBoard()
+			turn()
+			if (opt('players') == 1) {
+				highlightLastAIMoves()
+			}
+		} else {
+			alert('Invalid Input: One value should be "x". One value shoud be "y". The rest should be between 1 and 8')
+			DISPLAY_DIMENSIONS.map(function(x, i) {
+				isNaN(parseInt(x)) ? text_areas[i].value = x : text_areas[i].value = parseInt(x) + 1
+			})
+		}
+	})
 }
 
 // Gets selected options.
@@ -405,6 +461,7 @@ function addHighlighting(position, color) {
 	toSel(position).style.background = color
 }
 
+// Highlights the move that the AI last played and what pieces were turned.
 function highlightLastAIMoves() {
 	LAST_AI_MOVES.forEach(function(x, i) {
 		x.forEach(function(y, j) {
