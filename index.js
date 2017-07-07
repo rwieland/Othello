@@ -260,6 +260,8 @@ function changeViewPlane(dim) {
 	container.appendChild(go_button)
 	document.body.appendChild(container)
 	
+	container.id = 'plane-navigation'
+	
 	for (var i = 0; i < dim; i++) {
 		var list_element = document.createElement('li')
 		var box = document.createElement('textarea')
@@ -412,6 +414,8 @@ function turn() {
 // Creates display upon someone winning the game.
 function winDisplay() {
 	clearBoard()
+	var plane_navigation = document.getElementById('plane-navigation')
+	plane_navigation ? plane_navigation.remove() : null
 	win_display = document.createElement('div')
 	win_display.setAttribute('class', 'game-overlay')
 	message = document.createElement('h2')
@@ -584,6 +588,5 @@ function hideOptions() {
 // TODO: Fix token count/scoreboard during replay so that it displays the correct score for that turn.
 // TODO: Add more dimensions.
 /* FUNCTIONS TO UPDATE FOR N DIMENSIONS:
-	- changeViewPlane
 	- consoleLogTurnHistory (displays current state of the board)
 */
