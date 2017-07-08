@@ -213,8 +213,8 @@ function nextPlayer() {
 }
 
 // Returns a count of tokens by PLAYERS on the BOARD.
-function tokenCount() {
-	var merged = BOARD.join().split(',') //
+function tokenCount(arr = BOARD) {
+	var merged = arr.join().split(',') //
 	COUNT = PLAYERS.map(function(player) {
 		var count = 0;
 		for (var i = 0; i < merged.length; i++) {
@@ -333,7 +333,7 @@ function toPos(sel) {
 // Draws the state of the BOARD.
 function drawBoard(arr = BOARD, dim = DISPLAY_DIMENSIONS) {
 	clearBoard()
-	scoreboard()
+	scoreboard(arr)
 	GAME.style.backgroundColor = 'black'
 	var display_board = toTwoDimensions(arr, dim)
 	var game = document.querySelector('#game')
@@ -360,9 +360,9 @@ function drawBoard(arr = BOARD, dim = DISPLAY_DIMENSIONS) {
 }
 
 // Displays current scores.
-function scoreboard() {
+function scoreboard(arr = BOARD) {
 	var scoreboard = document.getElementById('scoreboard').firstChild
-	scoreboard.innerHTML = `B: ${tokenCount()[0]} W: ${tokenCount()[1]}`	
+	scoreboard.innerHTML = `B: ${tokenCount(arr)[0]} W: ${tokenCount(arr)[1]}`	
 }
 
 // Clears the board from #game.
