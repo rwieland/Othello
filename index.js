@@ -620,6 +620,17 @@ function hideOptions() {
 	}
 }
 
-function shortLog() {
-	return TURN_HISTORY.slice(1).map(function(x) {return x.slice(1)}).join().split(',').join('')
+
+// FUNCTIONS FOR ANALYZING THE GAME
+// Returns a short log of turn history
+function gameLog() {	
+	var game_log = [
+		new Date(),
+		'0.1', // AI version number. Update for other versions.
+		'S' + '8' + DISPLAY_DIMENSIONS.length, // Board shape. S is for square. Update for non square boards.
+		TURN_HISTORY[0][0].join().split(',').map(function(x) {return x == ' ' ? 'X' : PLAYERS.indexOf(x)}).join(''),
+		TURN_HISTORY.slice(1).map(function(x) {return x.slice(1)}).join().split(',').join(''),
+		winner() ? winner() : 'F'
+	].join()
+	return game_log
 }
