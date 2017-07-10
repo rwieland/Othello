@@ -393,9 +393,10 @@ function clearBoard() {
 function turn() {
 	TURN_COUNT += 1
 	if (winner() !== false) { // If there is a winner
+		gameLog()
 		winDisplay()
 	} else if (validMoves(PLAYERS[CURRENT])) { // If the current player can make a move.
-		if (opt('players') == '2' || opt('human') == CURRENT.toString()) { // If it is a humans turn.
+		if (opt('players') == '2' || (opt('players') != '0' && opt('human') == CURRENT.toString())) { // If it is a humans turn.
 			validMoves(PLAYERS[CURRENT]).forEach(function(x) {				
 				if (toSel(x[0][0])) {
 					if (opt('highlight') == 1) {
@@ -611,7 +612,7 @@ function strategicMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CU
 function hideOptions() {
 	var ai = document.getElementById('ai').parentElement
 	var human = document.getElementById('human').parentElement
-	if (opt('players') == '1') {
+	if (opt('players') == '1' || opt('players') == '0') {
 		ai.style.display = ''
 		human.style.display = ''
 	} else {
@@ -620,8 +621,11 @@ function hideOptions() {
 	}
 }
 
-
 // FUNCTIONS FOR ANALYZING THE GAME
+
+var GAME_LOGS_TEXT = ['Date,AI version, Board shape, Initial board, Move History, Winner']
+var GAME_LOGS = null
+
 // Returns a short log of turn history
 function gameLog() {	
 	var game_log = [
@@ -630,7 +634,37 @@ function gameLog() {
 		'S' + '8' + DISPLAY_DIMENSIONS.length, // Board shape. S is for square. Update for non square boards.
 		TURN_HISTORY[0][0].join().split(',').map(function(x) {return x == ' ' ? 'X' : PLAYERS.indexOf(x)}).join(''),
 		TURN_HISTORY.slice(1).map(function(x) {return x.slice(1)}).join().split(',').join(''),
-		winner() ? winner() : 'F'
+		winner() ? winner() : 'F',
 	].join()
+	GAME_LOGS_TEXT.push(game_log)
 	return game_log
+}
+
+function downloadLogs() {
+	if (GAME_LOGS_TEXT.length < 2) {
+		return alert('There are no logged games')
+	}
+	
+	var data = new Blob([GAME_LOGS_TEXT.join('\n')], {type: 'text/plain'})	
+	
+	if (GAME_LOGS !== null) {
+		window.URL.revokeObjectURL(GAME_LOGS)
+	}	
+	
+	GAME_LOGS = window.URL.createObjectURL(data)
+	
+	var log_button = document.getElementById('logs')
+	
+	log_button.addEventListener('click', function () {
+		var link = document.createElement('a');
+		link.setAttribute('download', 'logs.txt');
+		link.href = GAME_LOGS;
+		document.body.appendChild(link);
+
+		window.requestAnimationFrame(function () {
+			var event = new MouseEvent('click');
+			link.dispatchEvent(event);
+			document.body.removeChild(link);
+		});
+	}, false);
 }
