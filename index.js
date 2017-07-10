@@ -9,6 +9,7 @@ var COLORS = {'B': 'black', 'W': 'white'};
 var TURN_HISTORY = [];
 var DISPLAY_DIMENSIONS = ['x', 'y'];
 var LAST_AI_MOVES = [];
+var TURN_COUNT = 0;
 
 const STANDARD_BOARD = [
 	new Array(8).fill(' '),
@@ -362,7 +363,7 @@ function drawBoard(arr = BOARD, dim = DISPLAY_DIMENSIONS) {
 // Displays current scores.
 function scoreboard(arr = BOARD) {
 	var scoreboard = document.getElementById('scoreboard').firstChild
-	scoreboard.innerHTML = `B: ${tokenCount(arr)[0]} W: ${tokenCount(arr)[1]}`	
+	scoreboard.innerHTML = `B: ${tokenCount(arr)[0]} W: ${tokenCount(arr)[1]}<br>Turn: ${TURN_COUNT + 1}`	
 }
 
 // Clears the board from #game.
@@ -375,6 +376,7 @@ function clearBoard() {
 
 // Cycles functions until a winner is declared.
 function turn() {
+	TURN_COUNT += 1
 	if (winner() !== false) { // If there is a winner
 		winDisplay()
 	} else if (validMoves(PLAYERS[CURRENT])) { // If the current player can make a move.
@@ -498,20 +500,20 @@ function replay() {
 	replay_menu.appendChild(last)
 	
 	replay_menu.style.textAlign = 'center'
-	var turn = 0
+	TURN_COUNT = 0
 	
 	first.innerHTML = '<<'
 	first.onclick = function() {
-		turn = 0
-		drawBoard(TURN_HISTORY[turn][0])
+		TURN_COUNT = 0
+		drawBoard(TURN_HISTORY[TURN_COUNT][0])
 	}
 	
 	previous.innerHTML = '<'
 	previous.onclick = function() {
-		if (turn > 0) {
-			turn -= 1
+		if (TURN_COUNT > 0) {
+			TURN_COUNT -= 1
 		}
-		drawBoard(TURN_HISTORY[turn][0])
+		drawBoard(TURN_HISTORY[TURN_COUNT][0])
 	}
 	
 	done.innerHTML = 'Done'
@@ -522,19 +524,19 @@ function replay() {
 	
 	next.innerHTML = '>'
 	next.onclick = function() {
-		if (turn < TURN_HISTORY.length - 1) {
-			turn += 1
+		if (TURN_COUNT < TURN_HISTORY.length - 1) {
+			TURN_COUNT += 1
 		}
-		drawBoard(TURN_HISTORY[turn][0])
+		drawBoard(TURN_HISTORY[TURN_COUNT][0])
 	}	
 	
 	last.innerHTML = '>>'
 	last.onclick = function() {
-		turn = TURN_HISTORY.length - 1
-		drawBoard(TURN_HISTORY[turn][0])
+		TURN_COUNT = TURN_HISTORY.length - 1
+		drawBoard(TURN_HISTORY[TURN_COUNT][0])
 	}
 	
-	drawBoard(TURN_HISTORY[turn][0])
+	drawBoard(TURN_HISTORY[TURN_COUNT][0])
 	if (DISPLAY_DIMENSIONS.length > 2) {
 		changeViewPlane(DISPLAY_DIMENSIONS.length)
 	}
