@@ -111,7 +111,7 @@ function newBoard(n = 2) {
 }
 
 // Converts an n dimensional board to two dimensions for display.
-function toTwoDimensions(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
+function toTwoDimensions(arr, disp) {
 	var row_index = disp.indexOf('x')
 	var column_index = disp.indexOf('y')
 	var filtered_indices = indices(arr).filter(function(x) { // Filters indices into desired dimensions
@@ -132,8 +132,8 @@ function toTwoDimensions(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
 }
 
 // Logs the BOARD in the console.
-function consoleLogBoard(arr = BOARD, disp = DISPLAY_DIMENSIONS) {
-	narr = toTwoDimensions(arr, disp).map(function(x) {return x.map(function(y) {return readBoard(y)})}) // Translates index to value
+function consoleLogBoard(arr, disp) {
+	narr = toTwoDimensions(arr, disp).map(function(x) {return x.map(function(y) {return readBoard(y, arr)})}) // Translates index to value
 	console.log('  0 1 2 3 4 5 6 7')
 	narr.map(function(x, i) {console.log(i + '|' + x.join('|') + '|')})
 }
@@ -333,7 +333,7 @@ function toPos(sel) {
 // Draws the state of the BOARD.
 function drawBoard(arr = BOARD, dim = DISPLAY_DIMENSIONS) {
 	clearBoard()
-	scoreboard()
+	scoreboard(arr)
 	GAME.style.backgroundColor = 'black'
 	var display_board = toTwoDimensions(arr, dim)
 	var game = document.querySelector('#game')
