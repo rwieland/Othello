@@ -10,6 +10,7 @@ var TURN_HISTORY = [];
 var DISPLAY_DIMENSIONS = ['x', 'y'];
 var LAST_AI_MOVES = [];
 var TURN_COUNT = 0;
+var CORNERS = [];
 
 const STANDARD_BOARD = [
 	new Array(8).fill(' '),
@@ -86,6 +87,18 @@ function setDirections(n) {
 	}
 	d = indices(d).map(function(x) {return x.map(function(y) {return y - 1})})
 	return DIRECTIONS = d.filter(function(x) {return !x.every(function(y) {return y == 0})}) 
+}
+
+function setCorners(arr) {
+	return [].concat(...[0, arr.length - 1].map(function(x) {
+		if (Array.isArray(arr[x])) {
+			return setCorners(arr[x]).map(function(y) {
+				return [].concat([x], y)
+			})
+		} else {
+			return [[x]]
+		}
+	}))
 }
 
 // Sets BOARD to standard starting positions.
@@ -572,6 +585,10 @@ function mostTokensMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[C
 		return net_tokens[i] === max_tokens
 	})
 	randomMove(max_moves, player)
+}
+
+function cornersMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CURRENT]) {
+	
 }
 
 // Hides AI options from the options menu when playing 2 player.
