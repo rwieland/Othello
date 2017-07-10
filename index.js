@@ -213,8 +213,8 @@ function nextPlayer() {
 }
 
 // Returns a count of tokens by PLAYERS on the BOARD.
-function tokenCount() {
-	var merged = BOARD.join().split(',') //
+function tokenCount(arr = BOARD) {
+	var merged = arr.join().split(',') //
 	COUNT = PLAYERS.map(function(player) {
 		var count = 0;
 		for (var i = 0; i < merged.length; i++) {
@@ -360,9 +360,9 @@ function drawBoard(arr = BOARD, dim = DISPLAY_DIMENSIONS) {
 }
 
 // Displays current scores.
-function scoreboard() {
+function scoreboard(arr = BOARD) {
 	var scoreboard = document.getElementById('scoreboard').firstChild
-	scoreboard.innerHTML = `B: ${tokenCount()[0]} W: ${tokenCount()[1]}`	
+	scoreboard.innerHTML = `B: ${tokenCount(arr)[0]} W: ${tokenCount(arr)[1]}`	
 }
 
 // Clears the board from #game.
@@ -374,7 +374,6 @@ function clearBoard() {
 }
 
 // Cycles functions until a winner is declared.
-// TODO: UPDATE FOR N DIMENSIONS
 function turn() {
 	if (winner() !== false) { // If there is a winner
 		winDisplay()
@@ -505,6 +504,7 @@ function replay() {
 	first.onclick = function() {
 		turn = 0
 		drawBoard(TURN_HISTORY[turn][0])
+		scoreboard(TURN_HISTORY[turn][0])
 	}
 	
 	previous.innerHTML = '<'
@@ -513,6 +513,7 @@ function replay() {
 			turn -= 1
 		}
 		drawBoard(TURN_HISTORY[turn][0])
+		scoreboard(TURN_HISTORY[turn][0])
 	}
 	
 	done.innerHTML = 'Done'
@@ -527,15 +528,18 @@ function replay() {
 			turn += 1
 		}
 		drawBoard(TURN_HISTORY[turn][0])
+		scoreboard(TURN_HISTORY[turn][0])
 	}	
 	
 	last.innerHTML = '>>'
 	last.onclick = function() {
 		turn = TURN_HISTORY.length - 1
 		drawBoard(TURN_HISTORY[turn][0])
+		scoreboard(TURN_HISTORY[turn][0])
 	}
 	
 	drawBoard(TURN_HISTORY[turn][0])
+	scoreboard(TURN_HISTORY[turn][0])
 }
 
 // FUNCTIONS FOR DUMB 'AI'
@@ -582,11 +586,3 @@ function hideOptions() {
 		human.style.display = 'none'
 	}
 }
-
-// TODO: Make prettier interface.
-// TODO: Smarter AI.
-// TODO: Fix token count/scoreboard during replay so that it displays the correct score for that turn.
-// TODO: Add more dimensions.
-/* FUNCTIONS TO UPDATE FOR N DIMENSIONS:
-	- consoleLogTurnHistory (displays current state of the board)
-*/
