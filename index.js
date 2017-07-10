@@ -258,6 +258,7 @@ function start() {
 		CURRENT = 0
 		newBoard(dim)
 		drawBoard()
+		CORNERS = setCorners(BOARD)
 		TURN_HISTORY = [[copyArray(BOARD), CURRENT]]
 		turn()
 		if (dim > 2) {
@@ -266,6 +267,7 @@ function start() {
 	}
 }
 
+// Sets up interface for changing the view plane.
 function changeViewPlane(dim) {
 	var container = document.createElement('div')
 	var menu = document.createElement('ul')
@@ -416,11 +418,12 @@ function turn() {
 				case '1':
 					mostTokensMove()
 					break
+				case '2':
+					strategicMove()
 			}			
 		}
 	} else { // If the current player cannot make a move but there is no winner.
 		nextPlayer()
-		TURN_HISTORY.push([copyArray(BOARD), CURRENT])
 		turn()
 	}
 }
@@ -587,8 +590,21 @@ function mostTokensMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[C
 	randomMove(max_moves, player)
 }
 
-function cornersMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CURRENT]) {
+// AI takes corners when available.
+function strategicMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CURRENT]) {
+	var corner_moves = moves.filter(function(position) {
+		return CORNERS.some(function(corner) {
+			return corner.every(function(x, i) {
+				return x == position[0][0][i]
+			})
+		})
+	})
 	
+	if (corner_moves[0]) {
+		return mostTokensMove(corner_moves, player)
+	}
+	
+	mostTokensMove(moves, player)
 }
 
 // Hides AI options from the options menu when playing 2 player.
