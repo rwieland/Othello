@@ -535,6 +535,9 @@ function replay() {
 	}
 	
 	drawBoard(TURN_HISTORY[turn][0])
+	if (DISPLAY_DIMENSIONS.length > 2) {
+		changeViewPlane(DISPLAY_DIMENSIONS.length)
+	}
 }
 
 // FUNCTIONS FOR DUMB 'AI'
