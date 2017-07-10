@@ -504,7 +504,6 @@ function replay() {
 	first.onclick = function() {
 		turn = 0
 		drawBoard(TURN_HISTORY[turn][0])
-		scoreboard(TURN_HISTORY[turn][0])
 	}
 	
 	previous.innerHTML = '<'
@@ -513,7 +512,6 @@ function replay() {
 			turn -= 1
 		}
 		drawBoard(TURN_HISTORY[turn][0])
-		scoreboard(TURN_HISTORY[turn][0])
 	}
 	
 	done.innerHTML = 'Done'
@@ -528,18 +526,15 @@ function replay() {
 			turn += 1
 		}
 		drawBoard(TURN_HISTORY[turn][0])
-		scoreboard(TURN_HISTORY[turn][0])
 	}	
 	
 	last.innerHTML = '>>'
 	last.onclick = function() {
 		turn = TURN_HISTORY.length - 1
 		drawBoard(TURN_HISTORY[turn][0])
-		scoreboard(TURN_HISTORY[turn][0])
 	}
 	
 	drawBoard(TURN_HISTORY[turn][0])
-	scoreboard(TURN_HISTORY[turn][0])
 }
 
 // FUNCTIONS FOR DUMB 'AI'
