@@ -259,6 +259,7 @@ function start() {
 		newBoard(dim)
 		drawBoard()
 		CORNERS = setCorners(BOARD)
+		TURN_COUNT = 0
 		TURN_HISTORY = [[copyArray(BOARD), CURRENT]]
 		turn()
 		if (dim > 2) {
