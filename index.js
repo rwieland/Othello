@@ -443,6 +443,7 @@ function winDisplay() {
 	win_display.appendChild(message)
 	win_display.appendChild(reset_button)
 	win_display.appendChild(replay_button)
+	win_display.id = 'win-display'
 	
 	if (winner() == "T") {
 		message.innerHTML = 'Tie'
@@ -641,6 +642,7 @@ function gameLog() {
 	return game_log
 }
 
+// Downloads logs
 function downloadLogs() {
 	if (GAME_LOGS_TEXT.length < 2) {
 		return alert('There are no logged games')
@@ -668,4 +670,18 @@ function downloadLogs() {
 			document.body.removeChild(link);
 		});
 	}, false);
+}
+
+function simulate(n) {
+	document.getElementById('players').selectedIndex = 2
+	document.getElementById('ai').selectedIndex = 0
+	
+	while (GAME_LOGS_TEXT.length < n + 1) {
+		start()
+		console.clear()
+		console.log(GAME_LOGS_TEXT.length - 1)
+		document.getElementById('win-display').remove()
+	}
+	
+	document.getElementById('game-options').style.display = ''
 }
