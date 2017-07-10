@@ -404,8 +404,8 @@ function turn() {
 					toSel(x[0][0]).addEventListener('click', function(event) {
 						move(toPos(event.target), PLAYERS[CURRENT])
 						drawBoard()
-						nextPlayer()
 						TURN_HISTORY.push([copyArray(BOARD), CURRENT, toPos(event.target)])
+						nextPlayer()						
 						turn()
 					})
 				}
@@ -567,8 +567,8 @@ function randomMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CURRE
 	drawBoard()
 	LAST_AI_MOVES = moves[i]
 	highlightLastAIMoves()
-	nextPlayer()	
 	TURN_HISTORY.push([copyArray(BOARD), CURRENT, moves[i][0][0]])
+	nextPlayer()
 	turn()
 }
 
@@ -618,4 +618,8 @@ function hideOptions() {
 		ai.style.display = 'none'
 		human.style.display = 'none'
 	}
+}
+
+function shortLog() {
+	return TURN_HISTORY.slice(1).map(function(x) {return x.slice(1)}).join().split(',').join('')
 }
