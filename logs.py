@@ -82,3 +82,16 @@ class Log:
 			se = math.sqrt(p * (1 - p) / n)
 			self.CI[key] = [round(p - z * se, 3), round(p + z * se, 3)]
 		return self.CI
+
+	def merge_logs(self, input, output):
+		f1 = open(self.file)
+		f2 = open(input)
+		f3 = open(output, 'a+')
+		
+		f3.writelines(f1.readlines())	
+		f3.writelines(f2.readlines())	
+		
+		f1.close()
+		f2.close()
+		f3.close()
+		
