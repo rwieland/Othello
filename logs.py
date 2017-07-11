@@ -1,3 +1,5 @@
+import math
+
 class Log:
 	def __init__(self, file):
 		self.file = file
@@ -16,7 +18,9 @@ class Log:
 		self.count_wins()
 		
 		self.averages = {}
+		self.CI = {}
 		self.average_wins()
+		self.set_CI()
 	
 	def read_logs(self):
 		f = open(self.file)
@@ -70,3 +74,11 @@ class Log:
 			else:
 				self.averages[key] = 0.0
 		return self.averages
+		
+	def set_CI(self, z = 1.96):
+		for key in self.averages.keys():
+			p = self.averages[key]
+			n = self.move_counts[key]
+			se = math.sqrt(p * (1 - p) / n)
+			self.CI[key] = [round(p - z * se, 3), round(p + z * se, 3)]
+		return self.CI
