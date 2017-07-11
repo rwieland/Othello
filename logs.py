@@ -88,8 +88,9 @@ class Log:
 		f2 = open(input)
 		f3 = open(output, 'a+')
 		
-		f3.writelines(f1.readlines())	
-		f3.writelines(f2.readlines())	
+		f3.writelines(f1.readlines())
+		f3.write('\n')
+		f3.writelines(f2.readlines()[1:])	
 		
 		f1.close()
 		f2.close()
