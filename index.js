@@ -422,6 +422,10 @@ function turn() {
 					break
 				case '2':
 					strategicMove()
+					break
+				case '3':
+					weightedMove()
+					break
 			}			
 		}
 	} else { // If the current player cannot make a move but there is no winner.
@@ -608,6 +612,18 @@ function strategicMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CU
 	}
 	
 	mostTokensMove(moves, player)
+}
+
+function weightedMove(moves = validMoves(PLAYERS[CURRENT]), player = PLAYERS[CURRENT]) {
+	var move_weights = moves.map(function(x) {return WEIGHTS[`${x[0][0][0]}${x[0][0][1]}`]})
+	var i = move_weights.indexOf(Math.max(...move_weights))
+	move(moves[i][0][0], player)
+	drawBoard()
+	LAST_AI_MOVES = moves[i]
+	highlightLastAIMoves()
+	TURN_HISTORY.push([copyArray(BOARD), CURRENT, moves[i][0][0]])
+	nextPlayer()
+	turn()
 }
 
 // Hides AI options from the options menu when playing 2 player.
