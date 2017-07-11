@@ -96,3 +96,8 @@ class Log:
 		f2.close()
 		f3.close()
 		
+	def write_to_file(self, value, output):
+		f = open(output, 'w+')
+		f.write(str(value)
+		f.close()
+		
