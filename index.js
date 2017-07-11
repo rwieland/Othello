@@ -636,7 +636,7 @@ function gameLog() {
 		'S' + '8' + DISPLAY_DIMENSIONS.length, // Board shape. S is for square. Update for non square boards.
 		TURN_HISTORY[0][0].join().split(',').map(function(x) {return x == ' ' ? 'X' : PLAYERS.indexOf(x)}).join(''),
 		TURN_HISTORY.slice(1).map(function(x) {return x.slice(1)}).join().split(',').join(''),
-		winner() ? winner() : 'F',
+		winner() !== false ? winner() : 'F',
 	].join()
 	GAME_LOGS_TEXT.push(game_log)
 	return game_log
@@ -672,6 +672,7 @@ function downloadLogs() {
 	}, false);
 }
 
+// Simulate n games.
 function simulate(n) {
 	document.getElementById('players').selectedIndex = 2
 	document.getElementById('ai').selectedIndex = 0
@@ -684,4 +685,16 @@ function simulate(n) {
 	}
 	
 	document.getElementById('game-options').style.display = ''
+}
+
+// Redraw board from game logs.
+function reloadGame(index) {
+	newBoard()
+	var moves = GAME_LOGS_TEXT[index].split(',')[4].match(/.{1,3}/g)
+	GAME_LOGS_TEXT.forEach(function(x) {console.log(x.split(',')[5])})
+	moves.forEach(function(x) {
+		move([parseInt(x[1]), parseInt(x[2])], PLAYERS[parseInt(x[0])])
+	})
+	GAME_OPTIONS.style.display = 'none'
+	winDisplay()
 }
