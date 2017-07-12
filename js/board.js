@@ -45,6 +45,11 @@ Board.prototype.toInd = function(pos) {
 		}, 0)
 	}
 }
+
+Board.prototype.next = function(pos, dct) {
+	var nxt = pos.map(function(x,i) {return x + dct[i]})
+	return this.read(nxt) ? nxt : false
+}
 	
 Board.prototype.read = function(pos) { // Reads a position in this.barr
 	return this.barr[this.toInd(pos)]
@@ -56,8 +61,8 @@ Board.prototype.write = function(pos, value) {
 	return this.barr[i] ? this.barr[i] = value : undefined
 }
 
-Board.prototype.copy = function() { // Returns a copy of this.barr
-	return this.barr.map(function(x) {return x})
+Board.prototype.copy = function(arr) { // Returns a shallow copy of an array
+	return arr.map(function(x) {return x})
 }
 
 var RectangularBoard = function(str) {
