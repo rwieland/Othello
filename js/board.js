@@ -3,10 +3,13 @@ var Board = function(str){
 	// An array with the absolute lengths of each dimension
 	this.barr = new Array(this.dims.reduce(function(a, b) {return a*b}, 1)).fill(' '); 
 	// An one dimensional array of the board
+	this.disp = ['x', 'y'].concat(new Array(this.dims.length - 2).fill(0))
+	// An array of dimensions to display
 	this.setDiml()
 	// An array of dimension lengths within this.barr
 	this.setPoss() 
 	// An array of positions on the board as arrays
+	this.disp = ['x', 'y'].concat(new Array(this.dims.length - 2).fill(0))
 }
 
 Board.prototype.setDiml = function() { 
@@ -95,5 +98,37 @@ RectangularBoard.prototype.setCrns = function() {
 			return x == 0 || x == that.dims[i] - 1
 		})
 	})
+}
+
+RectangularBoard.prototype.to2D = function() {
+	var row_index = this.disp.indexOf('x')
+	var column_index = this.disp.indexOf('y')
+	var that = this
+	var filtered_indices = this.poss.filter(function(x) { 
+		// Filters indices into desired dimensions
+		return x.every(function(y, i) {
+			return !Number.isInteger(that.disp[i]) || y == that.disp[i]
+		})
+	})
+	
+	var result = []
+	for (var i = 0; i < 8; i++) { // Sorts filtered indices into a 2d array.
+		var row = filtered_indices.filter(function(x) {
+			return x[row_index] == i
+		})
+		row.sort(function(a, b) {return a[column_index] - b[column_index]})
+		result.push(row)
+	}
+	return result
+}
+
+RectangularBoard.prototype.log = function() {
+	var that = this
+	var arr = this.to2D().map(function(x) {return x.map(function(y) {return that.read(y)})}) 
+		// Translates index to value
+	var label = new Array(this.dims[this.disp.indexOf('x')]).fill('')
+	label = label.map(function(x, i) {return i})
+	console.log('  ' + label.join(' '))
+	arr.map(function(x, i) {console.log(i + '|' + x.join('|') + '|')})
 }
 
