@@ -108,25 +108,33 @@ Othello.prototype.winner= function() {
 }
 
 // Converts a position to an html selection.
-Othello.prototype.toSel = function(position) {
+Othello.prototype.posToSel = function(position) {
 	return document.getElementById('t' + position.join(''))
 }
 
 // Converts a selected id to a position.
-Othello.prototype.toPos = function(sel) {
+Othello.prototype.selToPos = function(sel) {
 	return sel.id.split('').slice(1).map(function(x) {return parseInt(x)})
 }
 
 Othello.prototype.update = function() {
-	var tiles = querySelectorAll('.tile')
+	var tiles = this.game.querySelectorAll('.tile')
+	var that = this
 	tiles.forEach(function(x) {
 		var pos = toPos(x)
-		if (this.read(pos) != ' ') {
-			var token = document.createElement('div')
-			token.className = 'token'
-			token.style.background = this.colors[that.read(pos)]
-			tile.appendChild(token)
-		}	
+		var posv = that.read(pos)
+		if (posv != ' ') {
+			if (x.querySelector('.token')) {
+				console.log('Updating existing token')
+				x.querySelector('.token').style.backbround = that.colors
+			} else {
+				console.log('Creating new token')
+				var token = document.createElement('div')
+				token.className = 'token'
+				token.style.background = that.colors[posv]
+				x.appendChild(token)
+			}	
+		}
 	})
 }
 
