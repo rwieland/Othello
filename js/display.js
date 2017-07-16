@@ -6,7 +6,33 @@ Display.prototype = Object.create(Othello.prototype)
 Display.prototype.constructor = Othello
 
 Display.prototype.drawBoard = function() {
-	console.log('drawBoard')
+	this.clearBoard()
+	this.scoreboard()
+	var that = this
+	GAME.style.backgroundColor = 'black'
+	GAME_OPTIONS.style.display = 'none'
+	var display_board = this.to2D()
+	var game = document.querySelector('#game')
+	display_board.forEach(function(x) {
+		var row = document.createElement('div')
+		row.className = 'row'
+		x.forEach(function(y) {
+			var tile_border = document.createElement('div')
+			var tile = document.createElement('div')
+			tile_border.className = 'tile-border'
+			tile.className = 'tile'
+			tile.id = 't' + y.join('')
+			if (that.read(y) != ' ') {
+				var token = document.createElement('div')
+				token.className = 'token'
+				token.style.background = COLORS[that.read(y)]
+				tile.appendChild(token)
+			}
+			tile_border.appendChild(tile)
+			row.appendChild(tile_border)	
+		})
+		game.appendChild(row)
+	})
 }
 
 Display.prototype.clearBoard = function() {
