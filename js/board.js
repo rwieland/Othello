@@ -10,6 +10,8 @@ var Board = function(str){
 	this.setPoss() 
 	// An array of positions on the board as arrays
 	this.disp = ['x', 'y'].concat(new Array(this.dims.length - 2).fill(0))
+	this.options = document.getElementById('game-options')
+	this.game = document.getElementById('game')
 }
 
 Board.prototype.setDiml = function() { 
@@ -130,5 +132,34 @@ RectangularBoard.prototype.log = function() {
 	label = label.map(function(x, i) {return i})
 	console.log('  ' + label.join(' '))
 	arr.map(function(x, i) {console.log(i + '|' + x.join('|') + '|')})
+}
+
+RectangularBoard.prototype.draw = function() {
+	this.clear()
+	var that = this
+	this.game.style.backgroundColor = 'black'
+	this.options.style.display = 'none'
+	var b = this.to2D()
+	b.forEach(function(x) {
+		var row = document.createElement('div')
+		row.className = 'row'
+		x.forEach(function(y) {
+			var tile_border = document.createElement('div')
+			var tile = document.createElement('div')
+			tile_border.className = 'tile-border'
+			tile.className = 'tile'
+			tile.id = 't' + y.join('')
+			tile_border.appendChild(tile)
+			row.appendChild(tile_border)	
+		})
+		that.game.appendChild(row)
+	})
+}
+
+RectangularBoard.prototype.clear = function() {
+	var b = document.querySelectorAll('.row')
+	for (var n = 0; n < b.length; n++) {
+		b[n].remove()
+	}	
 }
 

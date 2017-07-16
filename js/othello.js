@@ -2,6 +2,7 @@ var Othello = function(str) {
 	RectangularBoard.call(this, str)
 	this.players = ['B', 'W']
 	this.current = 0
+	this.colors = {'B': 'black', 'W': 'white'};
 	this.setBarr()
 }
 
@@ -104,6 +105,74 @@ Othello.prototype.winner= function() {
 	return !this.players.every(function(x) {return that.validMoves(x) == false}) ? false:
 		that.count[0] == that.count[1] ? 'T' 
 			: that.count.indexOf(Math.max.apply(null, that.count))	
+}
+
+// Converts a position to an html selection.
+Othello.prototype.toSel = function(position) {
+	return document.getElementById('t' + position.join(''))
+}
+
+// Converts a selected id to a position.
+Othello.prototype.toPos = function(sel) {
+	return sel.id.split('').slice(1).map(function(x) {return parseInt(x)})
+}
+
+Othello.prototype.update = function() {
+	var tiles = querySelectorAll('.tile')
+	tiles.forEach(function(x) {
+		var pos = toPos(x)
+		if (this.read(pos) != ' ') {
+			var token = document.createElement('div')
+			token.className = 'token'
+			token.style.background = this.colors[that.read(pos)]
+			tile.appendChild(token)
+		}	
+	})
+}
+
+Othello.prototype.winDisplay = function() {
+	clearBoard()
+	var plane_navigation = document.getElementById('plane-navigation')
+	plane_navigation ? plane_navigation.remove() : null
+	win_display = document.createElement('div')
+	win_display.setAttribute('class', 'game-overlay')
+	message = document.createElement('h2')
+	reset_button = document.createElement('button')
+	replay_button = document.createElement('button')
+	win_display.appendChild(message)
+	win_display.appendChild(reset_button)
+	win_display.appendChild(replay_button)
+	win_display.id = 'win-display'
+	
+	if (winner() == "T") {
+		message.innerHTML = 'Tie'
+	} else if (PLAYERS[winner()] == 'B') {
+		message.innerHTML = 'Black Wins'
+	} else if (PLAYERS[winner()] == 'W') {
+		message.innerHTML = 'White Wins'
+	} else {
+		message.innerHTML = 'Indecisive'
+	}
+	
+	reset_button.innerHTML = 'New Game'
+	reset_button.onclick = function() {
+		GAME_OPTIONS.style.display = ''
+		win_display.remove()
+	}
+	
+	replay_button.innerHTML = 'View Game'
+	replay_button.onclick = function() {
+		replay()
+		win_display.remove()
+	}
+	
+	GAME.style.backgroundColor = 'gray'
+	GAME.appendChild(win_display)
+}
+
+Othello.prototype.scoreboard = function() {
+	var scoreboard = document.getElementById('scoreboard').firstChild
+	scoreboard.innerHTML = `B: ${this.count[0]} W: ${this.count[1]}<br>Turn: ${this.history.length}`	
 }
 
 var bt = new Board('8x8')
