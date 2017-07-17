@@ -82,6 +82,8 @@ Othello.prototype.move = function(pos, player) {
 	})
 	
 	this.history.push(this.copy(this.barr))
+	this.last_move = validMove(pos, player)
+	this.nextPlayer()
 }
 
 Othello.prototype.nextPlayer = function() {
@@ -105,82 +107,6 @@ Othello.prototype.winner= function() {
 	return !this.players.every(function(x) {return that.validMoves(x) == false}) ? false:
 		that.count[0] == that.count[1] ? 'T' 
 			: that.count.indexOf(Math.max.apply(null, that.count))	
-}
-
-// Converts a position to an html selection.
-Othello.prototype.posToSel = function(position) {
-	return document.getElementById('t' + position.join(''))
-}
-
-// Converts a selected id to a position.
-Othello.prototype.selToPos = function(sel) {
-	return sel.id.split('').slice(1).map(function(x) {return parseInt(x)})
-}
-
-Othello.prototype.update = function() {
-	var tiles = this.game.querySelectorAll('.tile')
-	var that = this
-	tiles.forEach(function(x) {
-		var pos = toPos(x)
-		var posv = that.read(pos)
-		if (posv != ' ') {
-			if (x.querySelector('.token')) {
-				console.log('Updating existing token')
-				x.querySelector('.token').style.backbround = that.colors
-			} else {
-				console.log('Creating new token')
-				var token = document.createElement('div')
-				token.className = 'token'
-				token.style.background = that.colors[posv]
-				x.appendChild(token)
-			}	
-		}
-	})
-}
-
-Othello.prototype.winDisplay = function() {
-	clearBoard()
-	var plane_navigation = document.getElementById('plane-navigation')
-	plane_navigation ? plane_navigation.remove() : null
-	win_display = document.createElement('div')
-	win_display.setAttribute('class', 'game-overlay')
-	message = document.createElement('h2')
-	reset_button = document.createElement('button')
-	replay_button = document.createElement('button')
-	win_display.appendChild(message)
-	win_display.appendChild(reset_button)
-	win_display.appendChild(replay_button)
-	win_display.id = 'win-display'
-	
-	if (winner() == "T") {
-		message.innerHTML = 'Tie'
-	} else if (PLAYERS[winner()] == 'B') {
-		message.innerHTML = 'Black Wins'
-	} else if (PLAYERS[winner()] == 'W') {
-		message.innerHTML = 'White Wins'
-	} else {
-		message.innerHTML = 'Indecisive'
-	}
-	
-	reset_button.innerHTML = 'New Game'
-	reset_button.onclick = function() {
-		GAME_OPTIONS.style.display = ''
-		win_display.remove()
-	}
-	
-	replay_button.innerHTML = 'View Game'
-	replay_button.onclick = function() {
-		replay()
-		win_display.remove()
-	}
-	
-	GAME.style.backgroundColor = 'gray'
-	GAME.appendChild(win_display)
-}
-
-Othello.prototype.scoreboard = function() {
-	var scoreboard = document.getElementById('scoreboard').firstChild
-	scoreboard.innerHTML = `B: ${this.count[0]} W: ${this.count[1]}<br>Turn: ${this.history.length}`	
 }
 
 var bt = new Board('8x8')
