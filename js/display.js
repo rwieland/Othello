@@ -157,3 +157,11 @@ Othello.prototype.highlightMove = function(moves) {
 	})
 }
 
+Othello.prototype.play = function() {
+	
+}
+
+Othello.prototype.start = function() {
+	
+}
+

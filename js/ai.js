@@ -41,10 +41,36 @@ Othello.prototype.strategicMove = function(moves = this.validMoves(this.players[
 	this.mostTokensMove(moves)
 }
 
+Othello.prototype.moveWeights = function(moves = this.validMoves(this.players[this.current])) {
+	return moves.map(function(x) {return WEIGHTS[`${x[0][0][0]}${x[0][0][1]}`]})
+}
+
+Othello.prototype.nextMoveMaxWeights = function(moves = this.validMoves(this.players[this.current])) {
+	var that = this
+	return moves.map(function(x) {
+		var a = new Othello('8x8')
+		a.barr = a.copy(that.barr)
+		a.current = that.current
+		a.move(x[0][0], a.players[a.current])
+		
+		var move_weights = a.moveWeights()
+		return Math.max(...move_weights)
+	})
+}
+
 Othello.prototype.weightedMove = function(moves = this.validMoves(this.players[this.current])) {
-	var move_weights = moves.map(function(x) {return WEIGHTS[`${x[0][0][0]}${x[0][0][1]}`]})
+	var move_weights = this.moveWeights(moves)
 	var maximum = Math.max(...move_weights)
-	var filtered = moves.filter(function(x, i) {move_weights[i] == maximum})
+	var filtered = moves.filter(function(x, i) {return move_weights[i] == maximum})
+	console.log(filtered)
+	this.randomMove(filtered)
+}
+
+Othello.prototype.counterMove = function(moves = this.validMoves(this.players[this.current])) {
+	var move_weights = this.nextMoveMaxWeights()
+	var minimum = Math.min(...move_weights)
+	var filtered = moves.filter(function(x, i) {return move_weights[i] == minimum})
+	console.log(filtered)
 	this.randomMove(filtered)
 }
 
