@@ -53,7 +53,7 @@ Board.prototype.toInd = function(pos) {
 
 Board.prototype.next = function(pos, dct) {
 	var nxt = pos.map(function(x,i) {return x + dct[i]})
-	return this.read(nxt) ? nxt : false
+	return this.read(nxt) !== undefined ? nxt : false
 }
 	
 Board.prototype.read = function(pos) { // Reads a position in this.barr

@@ -143,6 +143,11 @@ Othello.prototype.replay = function() {
 	}
 }
 
+Othello.prototype.opt = function(x) {
+	var e = document.getElementById(x)
+	return e.options[e.selectedIndex].value
+}
+
 Othello.prototype.highlight = function(position, color) {
 	this.posToSel(position).style.background = color
 }
@@ -158,10 +163,68 @@ Othello.prototype.highlightMove = function(moves) {
 }
 
 Othello.prototype.play = function() {
+	this.count += 1
+	this.update()
 	
+	if (this.winner() !== false) { // If there is a winner
+		gameLog() // TODO!
+		this.winDisplay()
+	} else if (this.validMoves()) { // If the current player can make a move.
+		switch(this.players[this.current]) {
+			case 'human':
+				this.humanMove()
+				break
+			case '0':
+				this.randomMove()
+				break
+			case '1':
+				this.mostTokensMove()
+				break
+			case '2':
+				this.strategicMove()
+				break
+			case '3':
+				this.weightedMove()
+				break
+		}		
+	} else { // If the current player cannot make a move but there is no winner.
+		this.nextPlayer()
+		this.play()
+	}
+}
+
+Othello.prototype.humanMove = function() {
+	var that = this
+	this.validMoves().forEach(function(x) {				
+		if (that.posToSel(x[0][0])) {
+			if (that.opt('highlight') == 1) {
+				that.highlight(x[0][0], 'yellow')
+			}	
+			that.posToSel(x[0][0]).onclick = function(event) {
+				that.move(that.selToPos(event.target))
+				that.draw()
+				that.play()
+			}
+		}
+	})
 }
 
 Othello.prototype.start = function() {
-	
+	this.draw()
+	switch(this.opt('players')) {
+		case '0':
+			var a = this.opt('ai')
+			this.players = [a, a]
+			break
+		case '1':
+			var a = this.opt('ai')
+			var h = this.opt('human')
+			h == '0' ? this.players = ['human', a] : this.players = [a, 'human']
+			break
+		case '2':
+			this.players = ['human', 'human']
+			break
+	}
+	this.play()
 }
 

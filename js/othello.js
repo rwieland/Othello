@@ -1,8 +1,8 @@
 var Othello = function(str) {
 	RectangularBoard.call(this, str)
-	this.players = ['B', 'W']
+	this.players = ['', '']
 	this.current = 0
-	this.colors = {'B': 'black', 'W': 'white'};
+	this.colors = {'0': 'black', '1': 'white'};
 	this.setBarr()
 }
 
@@ -23,24 +23,24 @@ Othello.prototype.setBarr = function() {
 				// Determines if a position should be W or B.
 				return b == mid[i][1] ? a + 1 : a			
 			}, 0)
-			i % 2 == 0 ? that.write(x, 'B') : that.write(x, 'W')
+			i % 2 == 0 ? that.write(x, '0') : that.write(x, '1')
 		}
 	})
 	
 	this.history = [this.copy(this.barr)]
 }
 
-Othello.prototype.validRow = function(pos, dct, player) {
+Othello.prototype.validRow = function(pos, dct) {
 	var n = this.next(pos, dct)
 	var nv = this.read(n)
-	if (this.read(pos) == ' ' && nv != ' ' && nv && nv != player) {
+	if (this.read(pos) == ' ' && nv != ' ' && nv != undefined && nv != this.current) {
 		var row = [this.copy(pos), this.copy(n)]
 		var that = this
 		var valid = function() {
 			n = that.next(n, dct)
-			if (that.read(n) == false || that.read(n) == ' ') {
+			if (that.read(n) === false || that.read(n) == ' ') {
 				return false
-			} else if (that.read(n) == player) {
+			} else if (parseInt(that.read(n)) == that.current) {
 				return row
 			} else {
 				row.push(that.copy(n))
@@ -53,36 +53,37 @@ Othello.prototype.validRow = function(pos, dct, player) {
 	}
 }
 
-Othello.prototype.validMove = function(pos, player) {
+Othello.prototype.validMove = function(pos) {
 	var that = this
 	if (this.read(pos) != ' ') {
 		return false
 	} else {
 		var moves = this.dcts.map(function(dct) {
-			return that.validRow(pos, dct, player)
+			return that.validRow(pos, dct)
 		})
 		return moves.every(function(x) {return x == false}) ? false : moves.filter(function(x) {return x != false &&  x != undefined})
 	}
 }
 
-Othello.prototype.validMoves = function(player) {
+Othello.prototype.validMoves = function() {
 	var that = this
 	var moves = this.poss.map(function(pos) {
-		return that.validMove(pos, player)
+		return that.validMove(pos)
 	})
 	return moves.every(function(x) {return x == false}) ? false : moves.filter(function(x) {return x != false &&  x != undefined})
 }
 
-Othello.prototype.move = function(pos, player) {
+Othello.prototype.move = function(pos) {
 	var that = this
-	this.validMove(pos, player).forEach(function(x) {
+	var a = this.copy(this.validMove(pos))
+	a.forEach(function(x) {
 		x.forEach(function(y) {
-			that.write(y, player)
+			that.write(y, that.current.toString())
 		})
 	})
 	
 	this.history.push(this.copy(this.barr))
-	this.last_move = validMove(pos, player)
+	this.last_move = a
 	this.nextPlayer()
 }
 
@@ -92,10 +93,11 @@ Othello.prototype.nextPlayer = function() {
 
 Othello.prototype.tokenCount = function() {
 	var that = this
-	this.count = this.players.map(function(player) {
+	
+	this.count = this.players.map(function(x, p) {
 		var c = 0;
 		for (var i = 0; i < that.barr.length; i++) {
-			if (that.barr[i] == player) {c++}
+			if (that.barr[i] == p) {c++}
 		}
 		return c
 	})
@@ -104,7 +106,13 @@ Othello.prototype.tokenCount = function() {
 Othello.prototype.winner= function() {
 	this.tokenCount()
 	var that = this
-	return !this.players.every(function(x) {return that.validMoves(x) == false}) ? false:
+	var real_current = this.current
+	return !this.players.every(function(x, i) {
+		that.current = i
+		var result = that.validMoves() == false
+		that.current = real_current
+		return result
+	}) ? false:
 		that.count[0] == that.count[1] ? 'T' 
 			: that.count.indexOf(Math.max.apply(null, that.count))	
 }
