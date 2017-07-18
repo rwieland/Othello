@@ -42,7 +42,7 @@ Board.prototype.toPos = function(ind) {
 Board.prototype.toInd = function(pos) { 
 	// Converts a position arry into an index in this.barr
 	var that = this
-	if (pos.length != this.dims.length || pos.some(function(x) {return x < 0})) {
+	if (pos.length != this.dims.length || pos.some(function(x, i) {return x < 0 || x >= that.dims[i]})) {
 		return undefined
 	} else {
 		return pos.reduce(function(a, b, i) {

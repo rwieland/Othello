@@ -103,7 +103,7 @@ Othello.prototype.tokenCount = function() {
 	})
 }
 
-Othello.prototype.winner= function() {
+Othello.prototype.winner = function() {
 	this.tokenCount()
 	var that = this
 	var real_current = this.current
@@ -115,6 +115,20 @@ Othello.prototype.winner= function() {
 	}) ? false:
 		that.count[0] == that.count[1] ? 'T' 
 			: that.count.indexOf(Math.max.apply(null, that.count))	
+}
+
+Othello.prototype.undo = function() {
+	if (this.history.length < 2) {return false}
+	
+	var that = this
+	var x = this.history.pop().filter(function(x, i) {
+		return that.history[that.history.length - 1][i] == ' ' && x != ' '
+	})
+	
+	this.barr = this.copy(this.history[this.history.length - 1])
+	this.current = parseInt(x[0])
+	this.update()
+	this.play()
 }
 
 var bt = new Board('8x8')

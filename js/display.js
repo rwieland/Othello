@@ -48,9 +48,9 @@ Othello.prototype.winDisplay = function() {
 	
 	if (this.winner() == "T") {
 		message.innerHTML = 'Tie'
-	} else if (this.winner() == "0") {
+	} else if (this.winner() == 0) {
 		message.innerHTML = 'Black Wins'
-	} else if (this.winner == "1") {
+	} else if (this.winner() == 1) {
 		message.innerHTML = 'White Wins'
 	} else {
 		message.innerHTML = 'Indecisive'
@@ -97,6 +97,7 @@ Othello.prototype.replay = function() {
 	replay_menu.style.textAlign = 'center'
 	var that = this
 	this.turn = 0
+	this.barr = this.copy(this.history[this.turn])
 	
 	first.innerHTML = '<<'
 	first.onclick = function() {
@@ -153,10 +154,11 @@ Othello.prototype.highlight = function(position, color) {
 }
 
 Othello.prototype.highlightMove = function(moves) {
+	var that = this
 	moves.forEach(function(x, i) {
 		x.forEach(function(y, j) {
 			if (toSel(y)) {
-				i == 0 && j == 0 ? addHighlighting(y, 'red') : addHighlighting(y, 'pink')
+				i == 0 && j == 0 ? that.highlight(y, 'red') : that.highlight(y, 'pink')
 			}
 		})
 	})
@@ -199,6 +201,9 @@ Othello.prototype.humanMove = function() {
 		if (that.posToSel(x[0][0])) {
 			if (that.opt('highlight') == 1) {
 				that.highlight(x[0][0], 'yellow')
+				if (that.history.length > 1) {
+					that.highlightMove(that.last_move)
+				}
 			}	
 			that.posToSel(x[0][0]).onclick = function(event) {
 				that.move(that.selToPos(event.target))
