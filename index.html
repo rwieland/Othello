@@ -12,10 +12,9 @@
 			<h2>Options</h2>
 			<ul>
 				<li>Players
-					<select id="players" onchange="hideOptions()">
-						<option value="1">1 player</option>
-						<option value="2">2 players</option>
-						<option value="0">AI</option>
+					<select id="players" onchange="toggleAIOptions()">
+						<option value="1">1</option>
+						<option value="2">2</option>
 					</select>
 				</li>
 				<li>Highlight valid moves
@@ -39,10 +38,10 @@
 					</select>
 				</li>
 				<li>Dimensions
-					<textarea rows="1" cols="3" id="dimensions-option">2</textarea>
+					<textarea rows="1" cols="5" id="dimensions-option">2</textarea>
 				</li>				
 			</ul>
-			<button id="start-game" onclick="start()">Start</button>
+			<button id="start-game" onclick="ot.start()">Start</button>
 		</div>
 	</div>
 	<div id ="scoreboard"><h2></h2></div>
@@ -53,6 +52,7 @@
 	<script src="js/othello.js"></script>
     <script src="js/ai.js"></script>	
 	<script src="js/display.js"></script>
+	<script src="js/utils.js"></script>
   </body>
  </html>
  

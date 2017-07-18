@@ -166,27 +166,28 @@ Othello.prototype.highlightMove = function(moves) {
 
 Othello.prototype.play = function() {
 	this.count += 1
-	this.update()
+	if (!this.sim) {this.update()}
 	
 	if (this.winner() !== false) { // If there is a winner
 		// gameLog()
-		this.winDisplay()
+		if (!this.sim) {this.winDisplay()}
+		else {this.log}
 	} else if (this.validMoves()) { // If the current player can make a move.
 		switch(this.players[this.current]) {
 			case 'human':
 				this.humanMove()
 				break
 			case '0':
-				setTimeout(this.randomMove.bind(this), 1000)
+				this.randomMove()
 				break
 			case '1':
-				setTimeout(this.mostTokensMove.bind(this), 1000)
+				this.mostTokensMove()
 				break
 			case '2':
-				setTimeout(this.strategicMove.bind(this), 1000)
+				this.strategicMove()
 				break
 			case '3':
-				setTimeout(this.weightedMove.bind(this), 1000)
+				this.weightedMove()
 				break
 		}		
 	} else { // If the current player cannot make a move but there is no winner.
@@ -208,7 +209,8 @@ Othello.prototype.humanMove = function() {
 			that.posToSel(x[0][0]).onclick = function(event) {
 				that.move(that.selToPos(event.target))
 				that.draw()
-				that.play()
+				that.update()
+				setTimeout(that.play.bind(that), that.turn_delay)
 			}
 		}
 	})
@@ -217,10 +219,6 @@ Othello.prototype.humanMove = function() {
 Othello.prototype.start = function() {
 	this.draw()
 	switch(this.opt('players')) {
-		case '0':
-			var a = this.opt('ai')
-			this.players = [a, a]
-			break
 		case '1':
 			var a = this.opt('ai')
 			var h = this.opt('human')
@@ -230,6 +228,9 @@ Othello.prototype.start = function() {
 			this.players = ['human', 'human']
 			break
 	}
+	this.turn_delay = 1000	
+	this.sim = false
+	
 	this.play()
 }
 
