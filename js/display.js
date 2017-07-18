@@ -233,3 +233,13 @@ Othello.prototype.start = function() {
 	this.play()
 }
 
+Othello.prototype.logHistory = function() {
+	var that = this
+	var current_barr = this.copy(this.barr)
+	this.history.forEach(function(x) {
+		that.barr = x
+		that.log()
+	})
+	this.barr = current_barr
+}
+
