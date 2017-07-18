@@ -1,4 +1,5 @@
-Othello.prototype.randomMove = function(moves = this.validMoves(this.players[this.current])) {
+Othello.prototype.randomMove = function(moves) {
+	if (moves == undefined) {moves = this.validMoves()}
 	var i = Math.floor(Math.random() * moves.length)
 	this.move(moves[i][0][0])
 	this.play()
@@ -45,7 +46,7 @@ Othello.prototype.moveWeights = function(moves = this.validMoves()) {
 	return moves.map(function(x) {return WEIGHTS[`${x[0][0][0]}${x[0][0][1]}`]})
 }
 
-Othello.prototype.weightedMove = function(moves = this.validMoves(this.players[this.current])) {
+Othello.prototype.weightedMove = function(moves = this.validMoves()) {
 	var move_weights = this.moveWeights(moves)
 	var maximum = Math.max(...move_weights)
 	var filtered = moves.filter(function(x, i) {return move_weights[i] == maximum})

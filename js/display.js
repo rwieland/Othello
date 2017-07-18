@@ -12,15 +12,13 @@ Othello.prototype.update = function() {
 	var tiles = this.game.querySelectorAll('.tile')
 	var that = this
 	tiles.forEach(function(x) {
-		var pos = toPos(x)
+		var pos = that.selToPos(x)
 		var posv = that.read(pos)
 		var token = x.querySelector('.token')
 		if (posv != ' ') {
 			if (token) {
-				console.log('Updating existing token')
 				token.style.background = that.colors[posv]
 			} else {
-				console.log('Creating new token')
 				var token = document.createElement('div')
 				token.className = 'token'
 				token.style.background = that.colors[posv]
@@ -28,7 +26,6 @@ Othello.prototype.update = function() {
 			}	
 		} else {
 			if (token) {
-				console.log('Removing existing token')
 				token.remove()
 			}
 		}
@@ -49,30 +46,32 @@ Othello.prototype.winDisplay = function() {
 	win_display.appendChild(replay_button)
 	win_display.id = 'win-display'
 	
-	if (winner() == "T") {
+	if (this.winner() == "T") {
 		message.innerHTML = 'Tie'
-	} else if (PLAYERS[winner()] == 'B') {
+	} else if (this.winner() == "0") {
 		message.innerHTML = 'Black Wins'
-	} else if (PLAYERS[winner()] == 'W') {
+	} else if (this.winner == "1") {
 		message.innerHTML = 'White Wins'
 	} else {
 		message.innerHTML = 'Indecisive'
 	}
 	
+	var that = this
+	
 	reset_button.innerHTML = 'New Game'
 	reset_button.onclick = function() {
-		GAME_OPTIONS.style.display = ''
+		that.options.style.display = ''
 		win_display.remove()
 	}
 	
 	replay_button.innerHTML = 'View Game'
 	replay_button.onclick = function() {
-		replay()
+		that.replay()
 		win_display.remove()
 	}
 	
-	GAME.style.backgroundColor = 'gray'
-	GAME.appendChild(win_display)
+	this.game.style.backgroundColor = 'gray'
+	this.game.appendChild(win_display)
 }
 
 Othello.prototype.scoreboard = function() {
@@ -137,6 +136,7 @@ Othello.prototype.replay = function() {
 		that.update()
 	}
 	
+	this.draw()
 	this.update()
 	if (this.dims.length > 2) {
 		changeViewPlane(DISPLAY_DIMENSIONS.length)
@@ -167,7 +167,7 @@ Othello.prototype.play = function() {
 	this.update()
 	
 	if (this.winner() !== false) { // If there is a winner
-		gameLog() // TODO!
+		// gameLog()
 		this.winDisplay()
 	} else if (this.validMoves()) { // If the current player can make a move.
 		switch(this.players[this.current]) {
@@ -175,16 +175,16 @@ Othello.prototype.play = function() {
 				this.humanMove()
 				break
 			case '0':
-				this.randomMove()
+				setTimeout(this.randomMove.bind(this), 1000)
 				break
 			case '1':
-				this.mostTokensMove()
+				setTimeout(this.mostTokensMove.bind(this), 1000)
 				break
 			case '2':
-				this.strategicMove()
+				setTimeout(this.strategicMove.bind(this), 1000)
 				break
 			case '3':
-				this.weightedMove()
+				setTimeout(this.weightedMove.bind(this), 1000)
 				break
 		}		
 	} else { // If the current player cannot make a move but there is no winner.

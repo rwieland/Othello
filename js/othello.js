@@ -38,7 +38,7 @@ Othello.prototype.validRow = function(pos, dct) {
 		var that = this
 		var valid = function() {
 			n = that.next(n, dct)
-			if (that.read(n) === false || that.read(n) == ' ') {
+			if (that.read(n) === false || that.read(n) == ' ' || that.read(n) == undefined) {
 				return false
 			} else if (parseInt(that.read(n)) == that.current) {
 				return row
