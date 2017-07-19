@@ -48,8 +48,15 @@ var downloadLogs = function() {
 var newGame = function() {
 	// Creates a new game
 	var dims = document.getElementById('dimensions-option')
-	CURRENT_GAME = new Othello(dims.value)
-	CURRENT_GAME.start()
+	var valid_dims = dims.value.split('x').every(function(x) {return !isNaN(parseInt(x))});
+	
+	if (!valid_dims) {
+		alert('Board Dimensions are invalid! Use the format AxB... where A and B are numbers.')
+		dims.value = '8x8'
+	} else {
+		CURRENT_GAME = new Othello(dims.value)
+		CURRENT_GAME.start()
+	}
 }
 
 var toggleAIOptions = function() {
