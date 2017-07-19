@@ -1,3 +1,9 @@
+var newGame = function() {
+	var dims = document.getElementById('dimensions-option')
+	var x = new Othello(dims.value)
+	x.start()
+}
+
 var toggleAIOptions = function() {
 	// Toggles displayed options based on the number of players selected
 	var ai = document.getElementById('ai').parentElement

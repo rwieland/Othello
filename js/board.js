@@ -133,8 +133,10 @@ RectangularBoard.prototype.to2D = function() {
 RectangularBoard.prototype.log = function() {
 	// Logs a 2D selection of the board to the console
 	var that = this
-	var arr = this.to2D().map(function(x) {return x.map(function(y) {return that.read(y)})}) 
-		// Translates index to value
+	var arr = this.to2D().map(function(x) {return x.map(function(y) {
+		return that.read(y)
+	})}) 
+	// Translates index to value
 	var label = new Array(this.dims[this.disp.indexOf('x')]).fill('')
 	label = label.map(function(x, i) {return i})
 	console.log('  ' + label.join(' '))
