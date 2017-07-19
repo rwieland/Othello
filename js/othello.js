@@ -152,7 +152,3 @@ Othello.prototype.undo = function() {
 	this.play()
 }
 
-var bt = new Board('8x8')
-var rt = new RectangularBoard('8x8')
-var ot = new Othello('8x8')
-
