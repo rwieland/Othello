@@ -50,9 +50,9 @@ Othello.prototype.winDisplay = function() {
 	
 	if (this.winner() == "T") {
 		message.innerHTML = 'Tie'
-	} else if (this.winner() == 0) {
+	} else if (this.winner() === 0) {
 		message.innerHTML = 'Black Wins'
-	} else if (this.winner() == 1) {
+	} else if (this.winner() === 1) {
 		message.innerHTML = 'White Wins'
 	} else {
 		message.innerHTML = 'Indecisive'
@@ -78,6 +78,7 @@ Othello.prototype.winDisplay = function() {
 
 Othello.prototype.scoreboard = function() {
 	// Displays the current score
+	this.tokenCount()
 	var scoreboard = document.getElementById('scoreboard').firstChild
 	scoreboard.innerHTML = `B: ${this.count[0]} W: ${this.count[1]}<br>Turn: ${this.history.length}`	
 }
@@ -108,6 +109,7 @@ Othello.prototype.replay = function() {
 		that.turn = 0
 		that.barr = that.copy(that.history[that.turn])
 		that.update()
+		that.scoreboard()
 	}
 	
 	previous.innerHTML = '<'
@@ -117,11 +119,14 @@ Othello.prototype.replay = function() {
 		}
 		that.barr = that.copy(that.history[that.turn])
 		that.update()
+		that.scoreboard()
 	}
 	
 	done.innerHTML = 'Done'
 	done.onclick = function() {
 		that.winDisplay()
+		that.barr = that.copy(that.history[that.history.length - 1])
+		that.scoreboard()
 		replay_menu.remove()
 	}
 	
@@ -132,6 +137,7 @@ Othello.prototype.replay = function() {
 		}
 		that.barr = that.copy(that.history[that.turn])
 		that.update()
+		that.scoreboard()
 	}	
 	
 	last.innerHTML = '>>'
@@ -139,6 +145,7 @@ Othello.prototype.replay = function() {
 		that.turn = that.history.length - 1
 		that.barr = that.copy(that.history[that.turn])
 		that.update()
+		that.scoreboard()
 	}
 	
 	this.draw()
@@ -174,7 +181,10 @@ Othello.prototype.highlightMove = function(moves) {
 Othello.prototype.play = function() {
 	// Plays the next turn
 	this.count += 1
-	if (!this.sim) {this.update()}
+	if (!this.sim) {
+		this.update()
+		this.scoreboard()
+	}
 	
 	if (this.winner() !== false) { // If there is a winner
 		// gameLog()
@@ -222,6 +232,7 @@ Othello.prototype.humanMove = function() {
 				that.move(that.selToPos(event.target))
 				that.draw()
 				that.update()
+				that.scoreboard()
 				setTimeout(that.play.bind(that), that.turn_delay)
 			}
 		}

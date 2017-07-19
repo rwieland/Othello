@@ -112,7 +112,7 @@ Othello.prototype.tokenCount = function() {
 	this.count = this.players.map(function(x, p) {
 		var c = 0;
 		for (var i = 0; i < that.barr.length; i++) {
-			if (that.barr[i] == p) {c++}
+			if (that.barr[i] == p.toString()) {c++}
 		}
 		return c
 	})
