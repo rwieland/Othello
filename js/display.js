@@ -246,12 +246,13 @@ Othello.prototype.start = function() {
 			var a = this.opt('ai')
 			var h = this.opt('human')
 			h == '0' ? this.players = ['H', a] : this.players = [a, 'H']
+			this.turn_delay = parseInt(this.opt('turn-speed'))
 			break
 		case '2':
 			this.players = ['H', 'H']
-			break
-	}
-	this.turn_delay = 1000	
+			this.turn_delay = 0
+			break			
+	}	
 	this.sim = false
 	
 	this.play()

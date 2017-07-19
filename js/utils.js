@@ -71,6 +71,7 @@ var toggleAdvancedOptions = function() {
 	// The advanced-options button
 	
 	var hghl = document.getElementById('highlight').parentElement
+	var tusp = document.getElementById('turn-speed').parentElement
 	var dims = document.getElementById('dimensions-option').parentElement
 	// The advanced options
 	
@@ -81,6 +82,7 @@ var toggleAdvancedOptions = function() {
 	}
 	
 	hghl.classList.toggle('hide')
+	tusp.classList.toggle('hide')
 	dims.classList.toggle('hide')
 }
 
