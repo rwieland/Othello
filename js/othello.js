@@ -8,6 +8,8 @@ var Othello = function(str) {
 	// The display colors for each player
 	this.setBarr()
 	// Sets barr to a standard othello starting arrangement
+	this.move_history = []
+	// An array of moves played
 }
 
 Othello.prototype = Object.create(RectangularBoard.prototype)
@@ -97,6 +99,8 @@ Othello.prototype.move = function(pos) {
 	// Writes the board state to this.history
 	this.last_move = a
 	// Used for highlighting the move
+	this.move_history.push(this.current.toString() + pos.join(''))
+	// Stores move in move history as a string
 	this.nextPlayer()
 }
 

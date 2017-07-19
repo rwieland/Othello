@@ -1,8 +1,55 @@
+var GAME_LOGS_TEXT = ['Date, AI version, Board shape, Initial board, Move History, Winner, Players']
+var GAME_LOGS = null
+
+Othello.prototype.gameLog = function() {	
+	var game_log = [
+		new Date(),
+		'0.2', // gameLog version number. Update for other versions.
+		this.dims.join('x'), // Board shape.
+		this.history[0].map(function(x) {return x == ' ' ? 'X' : x}).join(''),
+		this.move_history.join(''),
+		this.winner() !== false ? winner() : 'F',
+		this.players.join('')
+	].join()
+	GAME_LOGS_TEXT.push(game_log)
+	return game_log
+}
+
+var downloadLogs = function() {
+	if (GAME_LOGS_TEXT.length < 2) {
+		return alert('There are no logged games')
+	}
+	
+	var data = new Blob([GAME_LOGS_TEXT.join('\n')], {type: 'text/plain'})	
+	
+	if (GAME_LOGS !== null) {
+		window.URL.revokeObjectURL(GAME_LOGS)
+	}	
+	
+	GAME_LOGS = window.URL.createObjectURL(data)
+	
+	var log_button = document.getElementById('logs')
+	log_button.classList.remove('hide')
+	
+	log_button.addEventListener('click', function () {
+		var link = document.createElement('a');
+		link.setAttribute('download', 'logs.txt');
+		link.href = GAME_LOGS;
+		document.body.appendChild(link);
+
+		window.requestAnimationFrame(function () {
+			var event = new MouseEvent('click');
+			link.dispatchEvent(event);
+			document.body.removeChild(link);
+		});
+	}, false);
+}
+
 var newGame = function() {
 	// Creates a new game
 	var dims = document.getElementById('dimensions-option')
-	var x = new Othello(dims.value)
-	x.start()
+	CURRENT_GAME = new Othello(dims.value)
+	CURRENT_GAME.start()
 }
 
 var toggleAIOptions = function() {

@@ -187,12 +187,11 @@ Othello.prototype.play = function() {
 	}
 	
 	if (this.winner() !== false) { // If there is a winner
-		// gameLog()
+		this.gameLog()
 		if (!this.sim) {this.winDisplay()}
-		else {this.log}
 	} else if (this.validMoves()) { // If the current player can make a move.
 		switch(this.players[this.current]) {
-			case 'human':
+			case 'H':
 				this.humanMove()
 				break
 			case '0':
@@ -246,10 +245,10 @@ Othello.prototype.start = function() {
 		case '1':
 			var a = this.opt('ai')
 			var h = this.opt('human')
-			h == '0' ? this.players = ['human', a] : this.players = [a, 'human']
+			h == '0' ? this.players = ['H', a] : this.players = [a, 'H']
 			break
 		case '2':
-			this.players = ['human', 'human']
+			this.players = ['H', 'H']
 			break
 	}
 	this.turn_delay = 1000	
