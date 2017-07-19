@@ -1,4 +1,5 @@
 var newGame = function() {
+	// Creates a new game
 	var dims = document.getElementById('dimensions-option')
 	var x = new Othello(dims.value)
 	x.start()
