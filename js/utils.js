@@ -92,9 +92,9 @@ var simulateOthello = function(n, ai1, ai2, str = '8x8') {
 		x.players = [ai1, ai2]
 		x.sim = true
 		x.play()
-		x.log()
 		c++
 	}
+	downloadLogs()
 }
 
 var reloadGame = function(game_log) {
