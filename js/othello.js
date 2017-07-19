@@ -1,15 +1,20 @@
 var Othello = function(str) {
 	RectangularBoard.call(this, str)
 	this.players = ['', '']
+	// An array of players by type (human, ai type)
 	this.current = 0
+	// The current player
 	this.colors = {'0': 'black', '1': 'white'};
+	// The display colors for each player
 	this.setBarr()
+	// Sets barr to a standard othello starting arrangement
 }
 
 Othello.prototype = Object.create(RectangularBoard.prototype)
 Othello.prototype.constructor = RectangularBoard
 
 Othello.prototype.setBarr = function() {
+	// Sets barr to a standard othello starting arangement
 	var mid = this.dims.map(function(x) {
 		var n = Math.floor(x / 2)
 		return [n - 1, n]
@@ -31,6 +36,8 @@ Othello.prototype.setBarr = function() {
 }
 
 Othello.prototype.validRow = function(pos, dct) {
+	// Checks to see is a position has a valid row in a certain directions
+	// Returns the row if it is valid
 	var n = this.next(pos, dct)
 	var nv = this.read(n)
 	if (this.read(pos) == ' ' && nv != ' ' && nv != undefined && nv != this.current) {
@@ -54,6 +61,8 @@ Othello.prototype.validRow = function(pos, dct) {
 }
 
 Othello.prototype.validMove = function(pos) {
+	// Checks if a token can be played at a certain position
+	// Returns the positions that will be flipped
 	var that = this
 	if (this.read(pos) != ' ') {
 		return false
@@ -66,6 +75,7 @@ Othello.prototype.validMove = function(pos) {
 }
 
 Othello.prototype.validMoves = function() {
+	// Checks if there are any valid positions for the current player
 	var that = this
 	var moves = this.poss.map(function(pos) {
 		return that.validMove(pos)
@@ -74,6 +84,7 @@ Othello.prototype.validMoves = function() {
 }
 
 Othello.prototype.move = function(pos) {
+	// Places a token on the specified position and flips positions
 	var that = this
 	var a = this.copy(this.validMove(pos))
 	a.forEach(function(x) {
@@ -83,15 +94,19 @@ Othello.prototype.move = function(pos) {
 	})
 	
 	this.history.push(this.copy(this.barr))
+	// Writes the board state to this.history
 	this.last_move = a
+	// Used for highlighting the move
 	this.nextPlayer()
 }
 
 Othello.prototype.nextPlayer = function() {
+	// Sets this.current to the next player 
 	this.current < this.players.length - 1 ? this.current += 1 : this.current = 0
 }
 
 Othello.prototype.tokenCount = function() {
+	// Returns an array of the number of tokens for each player
 	var that = this
 	
 	this.count = this.players.map(function(x, p) {
@@ -104,6 +119,7 @@ Othello.prototype.tokenCount = function() {
 }
 
 Othello.prototype.winner = function() {
+	// Checks if there is a winner and returns the winner if there is one
 	this.tokenCount()
 	var that = this
 	var real_current = this.current
@@ -118,6 +134,7 @@ Othello.prototype.winner = function() {
 }
 
 Othello.prototype.undo = function() {
+	// Undoes the last move played
 	if (this.history.length < 2) {return false}
 	
 	var that = this

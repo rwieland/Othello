@@ -10,8 +10,11 @@ var Board = function(str){
 	this.setPoss() 
 	// An array of positions on the board as arrays
 	this.disp = ['x', 'y'].concat(new Array(this.dims.length - 2).fill(0))
+	// An array of dimensions for two-dimensional display
 	this.options = document.getElementById('game-options')
+	// The options menu
 	this.game = document.getElementById('game')
+	// The game
 }
 
 Board.prototype.setDiml = function() { 
@@ -52,6 +55,7 @@ Board.prototype.toInd = function(pos) {
 }
 
 Board.prototype.next = function(pos, dct) {
+	// Returns the next tile in a specified direction
 	var nxt = pos.map(function(x,i) {return x + dct[i]})
 	return this.read(nxt) !== undefined ? nxt : false
 }
@@ -94,6 +98,7 @@ RectangularBoard.prototype.setDcts = function() {
 }
 
 RectangularBoard.prototype.setCrns = function() {
+	// Sets this.crns to an array of corner positions on the board
 	var that = this
 	this.crns = this.poss.filter(function(pos) {
 		return pos.every(function(x, i) {
@@ -103,6 +108,7 @@ RectangularBoard.prototype.setCrns = function() {
 }
 
 RectangularBoard.prototype.to2D = function() {
+	// Returns a 2D array which is a subset of the board array based on this.disp
 	var row_index = this.disp.indexOf('x')
 	var column_index = this.disp.indexOf('y')
 	var that = this
@@ -125,6 +131,7 @@ RectangularBoard.prototype.to2D = function() {
 }
 
 RectangularBoard.prototype.log = function() {
+	// Logs a 2D selection of the board to the console
 	var that = this
 	var arr = this.to2D().map(function(x) {return x.map(function(y) {return that.read(y)})}) 
 		// Translates index to value
@@ -135,6 +142,7 @@ RectangularBoard.prototype.log = function() {
 }
 
 RectangularBoard.prototype.draw = function() {
+	// Draws the board in #game
 	this.clear()
 	var that = this
 	this.game.style.backgroundColor = 'black'
@@ -157,6 +165,7 @@ RectangularBoard.prototype.draw = function() {
 }
 
 RectangularBoard.prototype.clear = function() {
+	// Clears the board from #game
 	var b = document.querySelectorAll('.row')
 	for (var n = 0; n < b.length; n++) {
 		b[n].remove()

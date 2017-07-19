@@ -9,6 +9,7 @@ Othello.prototype.selToPos = function(sel) {
 }
 
 Othello.prototype.update = function() {
+	// Updates #game to display the current board
 	var tiles = this.game.querySelectorAll('.tile')
 	var that = this
 	tiles.forEach(function(x) {
@@ -33,6 +34,7 @@ Othello.prototype.update = function() {
 }
 
 Othello.prototype.winDisplay = function() {
+	// Creates a diplay shown when the game is over
 	this.clear()
 	var plane_navigation = document.getElementById('plane-navigation')
 	plane_navigation ? plane_navigation.remove() : null
@@ -75,11 +77,13 @@ Othello.prototype.winDisplay = function() {
 }
 
 Othello.prototype.scoreboard = function() {
+	// Displays the current score
 	var scoreboard = document.getElementById('scoreboard').firstChild
 	scoreboard.innerHTML = `B: ${this.count[0]} W: ${this.count[1]}<br>Turn: ${this.history.length}`	
 }
 
 Othello.prototype.replay = function() {
+	// Displays a navigable replay of the game
 	var replay_menu = document.createElement('div')
 	var first = document.createElement('button')
 	var previous = document.createElement('button')
@@ -145,15 +149,18 @@ Othello.prototype.replay = function() {
 }
 
 Othello.prototype.opt = function(x) {
+	// Gets a option value
 	var e = document.getElementById(x)
 	return e.options[e.selectedIndex].value
 }
 
 Othello.prototype.highlight = function(position, color) {
+	// Highlights a tile a specific color
 	this.posToSel(position).style.background = color
 }
 
 Othello.prototype.highlightMove = function(moves) {
+	// Highlights the last move played
 	var that = this
 	moves.forEach(function(x, i) {
 		x.forEach(function(y, j) {
@@ -165,6 +172,7 @@ Othello.prototype.highlightMove = function(moves) {
 }
 
 Othello.prototype.play = function() {
+	// Plays the next turn
 	this.count += 1
 	if (!this.sim) {this.update()}
 	
@@ -197,6 +205,7 @@ Othello.prototype.play = function() {
 }
 
 Othello.prototype.humanMove = function() {
+	// Sets up the board for human input
 	var that = this
 	this.validMoves().forEach(function(x) {				
 		if (that.posToSel(x[0][0])) {
@@ -217,6 +226,7 @@ Othello.prototype.humanMove = function() {
 }
 
 Othello.prototype.start = function() {
+	// Sets variables for the start of the game
 	this.draw()
 	switch(this.opt('players')) {
 		case '1':
@@ -235,6 +245,7 @@ Othello.prototype.start = function() {
 }
 
 Othello.prototype.logHistory = function() {
+	// Logs the history of the game to the console
 	var that = this
 	var current_barr = this.copy(this.barr)
 	this.history.forEach(function(x) {

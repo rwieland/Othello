@@ -1,4 +1,5 @@
 var toggleAIOptions = function() {
+	// Toggles displayed options based on the number of players selected
 	var ai = document.getElementById('ai').parentElement
 	var human = document.getElementById('human').parentElement
 	if (opt('players') == '1') {
@@ -10,7 +11,8 @@ var toggleAIOptions = function() {
 	}
 }
 
-function simulateOthello(n, ai1, ai2, str = '8x8') {
+var simulateOthello = function(n, ai1, ai2, str = '8x8') {
+	// Simulates n games with ai's 1 and 2 on a board str
 	var c = 0
 	while (c < n) {
 		var x = new Othello(str)
