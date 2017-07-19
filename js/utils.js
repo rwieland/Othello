@@ -17,6 +17,25 @@ var toggleAIOptions = function() {
 	}
 }
 
+var toggleAdvancedOptions = function() {
+	// Toggles the display of advanced options in the options menu
+	var ao = document.getElementById('advanced-options')
+	// The advanced-options button
+	
+	var hghl = document.getElementById('highlight').parentElement
+	var dims = document.getElementById('dimensions-option').parentElement
+	// The advanced options
+	
+	if (dims.classList == 'hide') {
+		ao.innerHTML = 'Hide Advanced Options'
+	} else {
+		ao.innerHTML = 'Advanced Options'
+	}
+	
+	hghl.classList.toggle('hide')
+	dims.classList.toggle('hide')
+}
+
 var simulateOthello = function(n, ai1, ai2, str = '8x8') {
 	// Simulates n games with ai's 1 and 2 on a board str
 	var c = 0

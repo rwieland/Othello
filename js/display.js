@@ -197,6 +197,9 @@ Othello.prototype.play = function() {
 			case '3':
 				this.weightedMove()
 				break
+			case '4':
+				this.counterMove()
+				break
 		}		
 	} else { // If the current player cannot make a move but there is no winner.
 		this.nextPlayer()

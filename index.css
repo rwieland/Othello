@@ -18,6 +18,10 @@ li {
 	margin: 2px;
 }
 
+.hide {
+	display: none;
+}
+
 #game {
 	height: 72vh;
 	width: 72vh;

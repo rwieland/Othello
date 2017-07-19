@@ -17,30 +17,32 @@
 						<option value="2">2</option>
 					</select>
 				</li>
-				<li>Highlight valid moves
+				<li>Difficulty
+					<select id="ai">
+						<option value="0">Easiest</option>
+						<option value="1">Easy</option>
+						<option value="2">Medium</option>
+						<option value="3">Hard</option>
+						<option value="4">Hardest</option>
+					</select>
+				</li>
+				<li>First Player
+					<select id="human">
+						<option value="1">Computer</option>
+						<option value="0">You</option>
+					</select>
+				</li>
+				<li class="hide">Highlight valid moves
 					<select id="highlight">
 						<option value="1">Yes</option>
 						<option value="0">No</option>
 					</select>
 				</li>
-				<li>AI
-					<select id="ai">
-						<option value="0">Random</option>
-						<option value="1">Most tokens</option>
-						<option value="2">Strategic</option>
-						<option value="3">Weighted Positions</option>
-					</select>
-				</li>
-				<li>First Player
-					<select id="human">
-						<option value="1">AI</option>
-						<option value="0">User</option>
-					</select>
-				</li>
-				<li>Dimensions
+				<li class="hide">Dimensions
 					<textarea rows="1" cols="5" id="dimensions-option">8x8</textarea>
 				</li>				
 			</ul>
+			<button id="advanced-options" onclick="toggleAdvancedOptions()">Advanced Options</button><br>
 			<button id="start-game" onclick="newGame()">Start</button>
 		</div>
 	</div>

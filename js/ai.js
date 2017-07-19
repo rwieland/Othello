@@ -79,7 +79,6 @@ Othello.prototype.counterMove = function(moves = this.validMoves()) {
 	var move_weights = this.nextMoveMaxWeights()
 	var minimum = Math.min(...move_weights)
 	var filtered = moves.filter(function(x, i) {return move_weights[i] == minimum})
-	console.log(filtered)
 	this.randomMove(filtered)
 }
 
