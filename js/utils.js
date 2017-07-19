@@ -97,3 +97,38 @@ var simulateOthello = function(n, ai1, ai2, str = '8x8') {
 	}
 }
 
+var reloadGame = function(game_log) {
+	// Reloads a previous game based on a game log
+	game_log = game_log.split(',')
+	CURRENT_GAME = new Othello(game_log[2])
+	// Creating a new game based on dimensions provided by the game log
+	
+	var arr = game_log[3].split('').map(function(x) {
+		return x === 'X' ? ' ' : x
+	})
+	CURRENT_GAME.barr = arr
+	CURRENT_GAME.history = arr
+	// Setting initial game board
+	
+	var moves = game_log[4].split('m').map(function(x) {
+		return x.split(' ').map(function(y) {
+			return parseInt(y)
+		})
+	}).slice(1)
+	// Retrieving move history from game log
+	
+	moves.forEach(function(x) {
+		CURRENT_GAME.current = x[0]
+		var pos = x.slice(1).join().split(',').map(function(x) {return parseInt(x)})
+		CURRENT_GAME.move(pos)
+	})
+	// Playing moves from move history
+	
+	CURRENT_GAME.players = game_log[6].split()
+	// Sets players equal to players from the game log
+	
+	GAME_OPTIONS.style.display = 'none'
+	CURRENT_GAME.play()
+	// Starts game
+}
+

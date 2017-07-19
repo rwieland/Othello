@@ -99,7 +99,7 @@ Othello.prototype.move = function(pos) {
 	// Writes the board state to this.history
 	this.last_move = a
 	// Used for highlighting the move
-	this.move_history.push(this.current.toString() + pos.join(''))
+	this.move_history.push('m' + this.current.toString() + ' ' + pos.join(' '))
 	// Stores move in move history as a string
 	this.nextPlayer()
 }
