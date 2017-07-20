@@ -46,6 +46,7 @@ Othello.prototype.strategicMove = function(moves = this.validMoves()) {
 Othello.prototype.moveWeights = function(moves = this.validMoves()) {
 	// Returns an array of move weights for a provided array of moves
 	var that = this
+	if (moves === false) {return [0]}
 	return moves.map(function(x) {
 		return that.weights[`${x[0][0][0]}${x[0][0][1]}`]
 	})

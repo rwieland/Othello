@@ -51,7 +51,7 @@ var newGame = function() {
 	var valid_dims = dims.value.split('x').every(function(x) {return !isNaN(parseInt(x))});
 	
 	if (!valid_dims) {
-		alert('Board Dimensions are invalid! Use the format AxB... where A and B are numbers.')
+		alert('Board Dimensions are invalid! Use the format AxB where A and B are numbers.')
 		dims.value = '8x8'
 	} else {
 		CURRENT_GAME = new Othello(dims.value)
