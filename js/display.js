@@ -150,6 +150,7 @@ Othello.prototype.replay = function() {
 	
 	this.draw()
 	this.update()
+	this.scoreboard()
 	if (this.dims.length > 2) {
 		changeViewPlane(DISPLAY_DIMENSIONS.length)
 	}
