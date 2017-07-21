@@ -10,6 +10,7 @@ var Othello = function(str) {
 	// Sets barr to a standard othello starting arrangement
 	this.move_history = []
 	// An array of moves played
+	this.turn = 0
 }
 
 Othello.prototype = Object.create(RectangularBoard.prototype)
@@ -101,6 +102,7 @@ Othello.prototype.move = function(pos) {
 	// Used for highlighting the move
 	this.move_history.push('m' + this.current.toString() + ' ' + pos.join(' '))
 	// Stores move in move history as a string
+	this.turn++
 	this.nextPlayer()
 }
 

@@ -80,7 +80,7 @@ Othello.prototype.scoreboard = function() {
 	// Displays the current score
 	this.tokenCount()
 	var scoreboard = document.getElementById('scoreboard').firstChild
-	scoreboard.innerHTML = `B: ${this.count[0]} W: ${this.count[1]}<br>Turn: ${this.history.length}`	
+	scoreboard.innerHTML = `B: ${this.count[0]} W: ${this.count[1]}<br>Turn: ${this.turn}`	
 }
 
 Othello.prototype.replay = function() {
