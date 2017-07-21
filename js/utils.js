@@ -115,8 +115,9 @@ var reloadGame = function(game_log) {
 	var arr = game_log[3].split('').map(function(x) {
 		return x === 'X' ? ' ' : x
 	})
-	CURRENT_GAME.barr = arr
-	CURRENT_GAME.history = arr
+	
+	CURRENT_GAME.barr = CURRENT_GAME.copy(arr)
+	CURRENT_GAME.history = [CURRENT_GAME.copy(arr)]
 	// Setting initial game board
 	
 	var moves = game_log[4].split('m').map(function(x) {
@@ -126,15 +127,16 @@ var reloadGame = function(game_log) {
 	}).slice(1)
 	// Retrieving move history from game log
 	
+	CURRENT_GAME.players = game_log[6].split('')
+	// Sets players equal to players from the game log
+	
 	moves.forEach(function(x) {
 		CURRENT_GAME.current = x[0]
 		var pos = x.slice(1).join().split(',').map(function(x) {return parseInt(x)})
 		CURRENT_GAME.move(pos)
 	})
-	// Playing moves from move history
 	
-	CURRENT_GAME.players = game_log[6].split()
-	// Sets players equal to players from the game log
+	// Playing moves from move history
 	
 	GAME_OPTIONS.style.display = 'none'
 	CURRENT_GAME.play()
