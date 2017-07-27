@@ -253,7 +253,11 @@ Othello.prototype.start = function() {
 			this.players = ['H', 'H']
 			this.turn_delay = 0
 			break			
-	}	
+	}
+
+	if (this.dims.length > 2) {
+		this.changeViewPlane()
+	}
 	this.sim = false
 	
 	this.play()

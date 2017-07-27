@@ -184,10 +184,11 @@ RectangularBoard.prototype.changeViewPlane = function(dim) {
 	
 	container.id = 'plane-navigation'
 	
-	for (var i = 0; i < dim; i++) {
+	for (var i = 0; i < this.dims.length; i++) {
 		var list_element = document.createElement('li')
 		var box = document.createElement('textarea')
 		var x = this.disp[i]
+		console.log(x)
 		
 		box.value = isNaN(parseInt(x)) ? x : parseInt(x) + 1
 		box.id = 'd' + (i + 1)
@@ -224,7 +225,7 @@ RectangularBoard.prototype.changeViewPlane = function(dim) {
 				return isNaN(parseInt(x)) ? x : parseInt(x) - 1
 			})
 			that.draw()
-			that.turn()
+			that.play()
 			if (opt('players') == 1) {
 				highlightLastAIMoves()
 			}
