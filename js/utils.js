@@ -1,5 +1,7 @@
 var GAME_LOGS_TEXT = ['Date, AI version, Board shape, Initial board, Move History, Winner, Players']
 var GAME_LOGS = null
+var AI_WINS = {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
+var AI_GAMES = {'0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0}
 
 Othello.prototype.gameLog = function() {	
 	var game_log = [
@@ -96,12 +98,16 @@ var toggleAdvancedOptions = function() {
 var simulateOthello = function(n, ai1, ai2, str = '8x8') {
 	// Simulates n games with ai's 1 and 2 on a board str
 	var c = 0
+	AI_GAMES[ai1] += n
+	AI_GAMES[ai2] += n
 	while (c < n) {
 		var x = new Othello(str)
 		x.players = [ai1, ai2]
 		x.sim = true
 		x.play()
+		AI_WINS[x.players[x.winner()]] += 1
 		c++
+		console.log(c)
 	}
 	downloadLogs()
 }

@@ -57,7 +57,6 @@ Othello.prototype.weightedMove = function(moves = this.validMoves()) {
 	var move_weights = this.moveWeights(moves)
 	var maximum = Math.max(...move_weights)
 	var filtered = moves.filter(function(x, i) {return move_weights[i] == maximum})
-	console.log(filtered)
 	this.randomMove(filtered)
 }
 
@@ -77,9 +76,20 @@ Othello.prototype.nextMoveMaxWeights = function(moves = this.validMoves()) {
 
 Othello.prototype.counterMove = function(moves = this.validMoves()) {
 	// Plays a move that minimizes the next players move weights
-	var move_weights = this.nextMoveMaxWeights()
+	var move_weights = this.nextMoveMaxWeights(moves)
 	var minimum = Math.min(...move_weights)
 	var filtered = moves.filter(function(x, i) {return move_weights[i] == minimum})
+	this.randomMove(filtered)
+}
+
+Othello.prototype.mixedMove = function(moves = this.validMoves()) {
+	// Plays a move that maximizes a calculated move weight
+	// The calculated move weight is the move weight minus the next move weight
+	var move_weights = this.moveWeights(moves)
+	var next_move_weights = this.nextMoveMaxWeights(moves)
+	var calculated_weights = move_weights.map(function(x, i) {return x - next_move_weights[i]})
+	var maximum = Math.max(...calculated_weights)
+	var filtered = moves.filter(function(x, i) {return calculated_weights[i] == maximum})
 	this.randomMove(filtered)
 }
 
