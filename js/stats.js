@@ -91,5 +91,16 @@ GameStats.prototype.statistics = function(player = 'H', arr = this.data) {
 	return result
 }
 
+GameStats.prototype.dateFilter = function(end, start = new Date, arr = this.data) {
+	return arr.filter(function(x) {
+		var d = new Date(x[0])
+		d = Date.parse(d)
+		e = Date.parse(end)
+		s = Date.parse(start)
+		console.log(e, d, s)
+		return e < d && d < s
+	})
+}	
+
 STATS = new GameStats
 
