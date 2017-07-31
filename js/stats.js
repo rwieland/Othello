@@ -39,12 +39,25 @@ GameStats.prototype.wins = function() {
 GameStats.prototype.statistics = function(player = 'H', arr = this.data) {
 	var result = {
 		'wins': 0,
+		'wins as player 1': 0,
+		'wins as player 2': 0,
+		
 		'ties': 0,
+		'ties as player 1': 0,
+		'ties as player 2': 0,
+		
 		'losses': 0,
-		'games with two players': 0,
+		'losses as player 1': 0,
+		'losses as player 2': 0,
+		
+		'1 player games played': 0,
+		
+		'games with 2 players': 0,
+		'ties in 2 player games': 0,
+		'player 1 wins in 2 player games': 0,
+		
 		'games with no player': 0,
 		'unfinished games': 0,
-		'games played': 0,
 		'total': arr.length
 	}
 	
@@ -52,21 +65,30 @@ GameStats.prototype.statistics = function(player = 'H', arr = this.data) {
 		var leg = this.legend[arr[i][1]][0].split(', ')
 		var winner = arr[i][leg.indexOf('Winner')]
 		var players = arr[i][leg.indexOf('Players')]
+		var player_i = players.indexOf(player)
 		
 		if (!players.split('').some(function(x) {return x == player})) {
 			result['games with no player']++
 		} else if (players[0] == players[1]) {
-			result['games with two players']++	
+			result['games with 2 players']++
+			if (winner == 'T') {
+				result['ties in 2 player games']++
+			} else if (winner == '0') {
+				result['player 1 wins in 2 player games']++
+			}	
 		} else if (winner == 'F'){
 			result['unfinished games']++
 		} else {
-			result['games played']++		
+			result['1 player games played']++		
 			if (winner == 'T') {
 				result['ties']++
+				player_i == 0 ? result['ties as player 1']++ : result['ties as player 2']++
 			} else if (players[parseInt(winner)] == player) {
 				result['wins']++
+				winner == '0' ? result['wins as player 1']++ : result['wins as player 2']++
 			} else {
 				result['losses']++
+				winner == '0' ? result['losses as player 2']++ : result['losses as player 1']++
 			}
 		}		
 	}
