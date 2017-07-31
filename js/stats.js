@@ -6,7 +6,7 @@ var GameStats = function() {
 
 GameStats.prototype.write = function(str) {
 	this.stat_str += str + '\n'
-	this.cookie = stat_str
+	this.cookie = this.stat_str
 	this.parse()
 }
 
