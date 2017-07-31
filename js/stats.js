@@ -32,10 +32,6 @@ GameStats.prototype.clear = function() {
 	this.data = []
 }
 
-GameStats.prototype.wins = function() {
-	
-}
-
 GameStats.prototype.statistics = function(player = 'H', arr = this.data) {
 	var result = {
 		'wins': 0,
