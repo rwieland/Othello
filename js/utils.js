@@ -10,7 +10,7 @@ Othello.prototype.gameLog = function() {
 		this.dims.join('x'), // Board shape.
 		this.history[0].map(function(x) {return x == ' ' ? 'X' : x}).join(''),
 		this.move_history.join(''),
-		this.winner() !== false ? winner() : 'F',
+		this.winner() !== false ? this.winner() : 'F',
 		this.players.join('')
 	].join()
 	GAME_LOGS_TEXT.push(game_log)

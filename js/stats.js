@@ -27,3 +27,5 @@ GameStats.prototype.clear = function() {
 	this.stat_str = ''
 	this.data = []
 }
+
+STATS = new GameStats

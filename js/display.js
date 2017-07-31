@@ -188,7 +188,9 @@ Othello.prototype.play = function() {
 	}
 	
 	if (this.winner() !== false) { // If there is a winner
-		this.gameLog()
+		if (this.opt('players') == '1') {STATS.write(this.gameLog())}
+		else {this.gameLog()}
+		
 		if (!this.sim) {this.winDisplay()}
 	} else if (this.validMoves()) { // If the current player can make a move.
 		switch(this.players[this.current]) {
