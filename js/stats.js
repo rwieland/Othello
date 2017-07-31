@@ -1,12 +1,11 @@
 var GameStats = function() {
-	this.cookie = document.cookie
 	this.stat_str = ''
 	this.data = []
 }
 
 GameStats.prototype.write = function(str) {
 	this.stat_str += str + '\n'
-	this.cookie = this.stat_str
+	document.cookie = this.stat_str
 	this.parse()
 }
 
@@ -19,7 +18,7 @@ GameStats.prototype.parse = function() {
 }
 
 GameStats.prototype.clear = function() {
-	this.cookie = ''
+	document.cookie = ''
 	this.stat_str = ''
 	this.data = []
 }
