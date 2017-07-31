@@ -1,6 +1,10 @@
 var GameStats = function() {
 	this.stat_str = ''
 	this.data = []
+	
+	this.legend = {
+		'0.2': ['Date, AI version, Board shape, Initial board, Move History, Winner, Players']
+	}
 }
 
 GameStats.prototype.write = function(str) {
@@ -28,4 +32,46 @@ GameStats.prototype.clear = function() {
 	this.data = []
 }
 
+GameStats.prototype.wins = function() {
+	
+}
+
+GameStats.prototype.statistics = function(player = 'H', arr = this.data) {
+	var result = {
+		'wins': 0,
+		'ties': 0,
+		'losses': 0,
+		'games with two players': 0,
+		'games with no player': 0,
+		'unfinished games': 0,
+		'games played': 0,
+		'total': arr.length
+	}
+	
+	for (var i = 0; i < arr.length; i++) {		
+		var leg = this.legend[arr[i][1]][0].split(', ')
+		var winner = arr[i][leg.indexOf('Winner')]
+		var players = arr[i][leg.indexOf('Players')]
+		
+		if (!players.split('').some(function(x) {return x == player})) {
+			result['games with no player']++
+		} else if (players[0] == players[1]) {
+			result['games with two players']++	
+		} else if (winner == 'F'){
+			result['unfinished games']++
+		} else {
+			result['games played']++		
+			if (winner == 'T') {
+				result['ties']++
+			} else if (players[parseInt(winner)] == player) {
+				result['wins']++
+			} else {
+				result['losses']++
+			}
+		}		
+	}
+	return result
+}
+
 STATS = new GameStats
+
