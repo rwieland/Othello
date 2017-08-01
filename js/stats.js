@@ -16,7 +16,7 @@ GameStats.prototype.write = function(str) {
 	this.stat_str += str + '    '
 	// Updates this.stat_str with new line of data in str
 	var exp = new Date
-	this.setStats(this.stat_str, 365)
+	this.setStats(this.stat_str)
 	// Updates document.cookie with new line of data in str
 	this.parse()
 	// Updates this.data with new line of data in str
@@ -31,7 +31,7 @@ GameStats.prototype.parse = function() {
 }
 
 GameStats.prototype.clear = function() {
-	document.cookie = "stats=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+	document.cookie = "stats="
 	this.stat_str = ''
 	this.data = []
 }
@@ -105,10 +105,8 @@ GameStats.prototype.dateFilter = function(end, start = new Date, arr = this.data
 	})
 }
 
-GameStats.prototype.setStats = function(cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toUTCString();
+GameStats.prototype.setStats = function(cvalue) {
+    var expires = "expires=Fri, 31 Dec 9999 23:59:59 GMT";
     document.cookie = "stats=" + cvalue + ";" + expires + ";path=/";
 }
 
@@ -125,6 +123,19 @@ GameStats.prototype.getStats = function() {
         }
     }
     return "";
+}
+
+GameStats.prototype.display = function() {
+	var today = new Date()
+	var yesterday = new Date()
+	var last_week = new Date()
+	var last_month = new Date()
+	
+	yesterday.setDate(yesterday.getDate() - 1)
+	last_week.setDate(last_week.getDate() - 7)
+	last_month.setDate(last_month.getDate() - 30)
+	
+	console.log(today, yesterday, last_week, last_month)
 }
 
 STATS = new GameStats
