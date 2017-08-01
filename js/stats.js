@@ -8,7 +8,7 @@ var GameStats = function() {
 }
 
 GameStats.prototype.write = function(str) {
-	this.stat_str += str + '\n'
+	this.stat_str += str + '\t'
 	// Updates this.stat_str with new line of data in str
 	var exp = new Date
 	exp.setYear(exp.getYear() + 5)
@@ -19,7 +19,7 @@ GameStats.prototype.write = function(str) {
 }
 
 GameStats.prototype.parse = function() {
-	var lines = this.stat_str.split('\n')
+	var lines = this.stat_str.split('\t')
 	lines = lines.slice(0, lines.length - 1)
 	this.data = lines.map(function(x) {
 		return x.split(',')
@@ -27,7 +27,7 @@ GameStats.prototype.parse = function() {
 }
 
 GameStats.prototype.clear = function() {
-	document.cookie = 'stats='
+	document.cookie = "stats=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
 	this.stat_str = ''
 	this.data = []
 }
@@ -97,7 +97,6 @@ GameStats.prototype.dateFilter = function(end, start = new Date, arr = this.data
 		d = Date.parse(d)
 		e = Date.parse(end)
 		s = Date.parse(start)
-		console.log(e, d, s)
 		return e < d && d < s
 	})
 }	
