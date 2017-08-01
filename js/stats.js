@@ -24,7 +24,6 @@ GameStats.prototype.write = function(str) {
 
 GameStats.prototype.parse = function() {
 	var lines = this.stat_str.split('    ')
-	lines = lines.slice(0, lines.length - 1)
 	this.data = lines.map(function(x) {
 		return x.split(',')
 	})
