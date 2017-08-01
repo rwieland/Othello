@@ -13,7 +13,11 @@ var GameStats = function() {
 }
 
 GameStats.prototype.write = function(str) {
-	this.stat_str += str + '    '
+	if (stat_str == '') {
+		stat_str = str
+	} else {
+		this.stat_str += '    ' + str
+	}	
 	// Updates this.stat_str with new line of data in str
 	var exp = new Date
 	this.setStats(this.stat_str)
@@ -135,6 +139,8 @@ GameStats.prototype.display = function() {
 	last_month.setDate(last_month.getDate() - 30)
 	
 	console.log(today, yesterday, last_week, last_month)
+	
+	
 }
 
 STATS = new GameStats
