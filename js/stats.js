@@ -1,10 +1,15 @@
 var GameStats = function() {
-	this.stat_str = ''
+	this.stat_str = this.getStats()
+	// A string of games played stored in a cookie
 	this.data = []
+	// An array of game logs
+	this.parse()
+	// Converts stat_str into data	
 	
 	this.legend = {
 		'0.2': ['Date, AI version, Board shape, Initial board, Move History, Winner, Players']
 	}
+	// A legend for understanding game logs based on version number
 }
 
 GameStats.prototype.write = function(str) {
