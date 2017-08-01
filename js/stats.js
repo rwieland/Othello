@@ -8,17 +8,17 @@ var GameStats = function() {
 }
 
 GameStats.prototype.write = function(str) {
-	this.stat_str += str + '\t'
+	this.stat_str += str + '    '
 	// Updates this.stat_str with new line of data in str
 	var exp = new Date
-	this.setStats(stat_str, 365)
+	this.setStats(this.stat_str, 365)
 	// Updates document.cookie with new line of data in str
 	this.parse()
 	// Updates this.data with new line of data in str
 }
 
 GameStats.prototype.parse = function() {
-	var lines = this.stat_str.split('\t')
+	var lines = this.stat_str.split('    ')
 	lines = lines.slice(0, lines.length - 1)
 	this.data = lines.map(function(x) {
 		return x.split(',')
