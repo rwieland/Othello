@@ -109,8 +109,8 @@ RectangularBoard.prototype.setCrns = function() {
 
 RectangularBoard.prototype.to2D = function() {
 	// Returns a 2D array which is a subset of the board array based on this.disp
-	var row_index = this.disp.indexOf('x')
-	var column_index = this.disp.indexOf('y')
+	var row_index = this.disp.indexOf('y')
+	var column_index = this.disp.indexOf('x')
 	var that = this
 	var filtered_indices = this.poss.filter(function(x) { 
 		// Filters indices into desired dimensions
@@ -120,7 +120,7 @@ RectangularBoard.prototype.to2D = function() {
 	})
 	
 	var result = []
-	for (var i = 0; i < 8; i++) { // Sorts filtered indices into a 2d array.
+	for (var i = 0; i < this.dims[row_index]; i++) { // Sorts filtered indices into a 2d array.
 		var row = filtered_indices.filter(function(x) {
 			return x[row_index] == i
 		})
@@ -171,12 +171,12 @@ RectangularBoard.prototype.adjustGameDimensions = function() {
 	// Adjusts the game display to show a rectangular board with square tiles
 	var x = this.disp.indexOf('x')
 	var y = this.disp.indexOf('y')
-	if (this.dims[x] < this.dims[y]) {
-		this.game.style.height = (70.0 * this.dims[x] / this.dims[y]).toString() + 'vmin'
+	if (this.dims[x] > this.dims[y]) {
+		this.game.style.height = (70.0 * this.dims[y] / this.dims[x]).toString() + 'vmin'
 		this.game.style.width = '70vmin'
-	} else if (this.dims[x] > this.dims[y]) {
+	} else if (this.dims[x] < this.dims[y]) {
 		this.game.style.height = '70vmin'	
-		this.game.style.width	= (70.0 * this.dims[y] / this.dims[x]).toString() + 'vmin'
+		this.game.style.width	= (70.0 * this.dims[x] / this.dims[y]).toString() + 'vmin'
 	} else {
 		this.game.style.height = '70vmin'
 		this.game.style.width = '70vmin'		
@@ -187,13 +187,13 @@ RectangularBoard.prototype.adjustGameDimensions = function() {
 	console.log(this.game.style.width)
 
 	var rows = this.game.querySelectorAll('.row')
-	var row_height = 1.0 / this.dims[x] * 100
+	var row_height = 1.0 / this.dims[y] * 100
 	for (var i = 0; i < rows.length; i++) {
 		rows[i].style.height = row_height.toString() + '%'
 	}
 	
 	var tiles = this.game.querySelectorAll('.tile-border')
-	var tile_width = 1.0 / this.dims[y] * 100
+	var tile_width = 1.0 / this.dims[x] * 100
 	for (var i = 0; i < tiles.length; i++) {
 		tiles[i].style.width = tile_width.toString() + '%'
 	}
