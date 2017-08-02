@@ -23,11 +23,12 @@ li {
 }
 
 #game {
-	height: 72vh;
-	width: 72vh;
+	height: 70vmin;
+	width: 70vmin;
 	margin: 0 auto;
 	border: solid black 4px;
 	background: gray;
+	display: block;
 }
 
 .row {
@@ -66,9 +67,9 @@ li {
 }
 
 .game-overlay {
-	width: 60vh;
+	width: 60vmin;
 	margin: 0 auto;
-	margin-top: 10vh;
+	margin-top: 10vmin;
 	border: solid black 4px;
 	background: lightgray;
 	text-align: center;

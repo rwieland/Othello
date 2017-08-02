@@ -164,6 +164,39 @@ RectangularBoard.prototype.draw = function() {
 		})
 		that.game.appendChild(row)
 	})
+	this.adjustGameDimensions()
+}
+
+RectangularBoard.prototype.adjustGameDimensions = function() {
+	// Adjusts the game display to show a rectangular board with square tiles
+	var x = this.disp.indexOf('x')
+	var y = this.disp.indexOf('y')
+	if (this.dims[x] < this.dims[y]) {
+		this.game.style.height = (70.0 * this.dims[x] / this.dims[y]).toString() + 'vmin'
+		this.game.style.width = '70vmin'
+	} else if (this.dims[x] > this.dims[y]) {
+		this.game.style.height = '70vmin'	
+		this.game.style.width	= (70.0 * this.dims[y] / this.dims[x]).toString() + 'vmin'
+	} else {
+		this.game.style.height = '70vmin'
+		this.game.style.width = '70vmin'		
+	}
+	console.log(this.game)
+	console.log(this.game.style)
+	console.log(this.game.style.height)
+	console.log(this.game.style.width)
+
+	var rows = this.game.querySelectorAll('.row')
+	var row_height = 1.0 / this.dims[x] * 100
+	for (var i = 0; i < rows.length; i++) {
+		rows[i].style.height = row_height.toString() + '%'
+	}
+	
+	var tiles = this.game.querySelectorAll('.tile-border')
+	var tile_width = 1.0 / this.dims[y] * 100
+	for (var i = 0; i < tiles.length; i++) {
+		tiles[i].style.width = tile_width.toString() + '%'
+	}
 }
 
 RectangularBoard.prototype.clear = function() {
