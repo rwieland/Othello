@@ -140,7 +140,7 @@ GameStats.prototype.display = function() {
 	
 	console.log(today, yesterday, last_week, last_month)
 	
-	
+	alert('Under construction')
 }
 
 STATS = new GameStats

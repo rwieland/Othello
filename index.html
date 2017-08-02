@@ -7,8 +7,14 @@
   </head>
   <body>
     <div><h1>OTHELLO</h1></div>
-	<div id="game">
-		<div id="game-options" class="game-overlay">
+	<div id="game">		
+		<div id="main-menu" class="game-overlay">
+			<h2>Main Menu</h2>
+			<button id="new-game" onclick="toggleMainMenu()">New Game</button><br>
+			<button id="load-game" onclick="loadGame()">Load Game</button><br>
+			<button id="view-stats" onclick="STATS.display()">View Statistics</button>
+		</div>
+		<div id="game-options" class="game-overlay hide">
 			<h2>Options</h2>
 			<ul>
 				<li>Players
@@ -50,8 +56,8 @@
 				</li>				
 			</ul>
 			<button id="advanced-options" onclick="toggleAdvancedOptions()">Advanced Options</button><br>
-			<button id="view-stats" onclick="STATS.display()">View Statistics</button><br>
-			<button id="start-game" onclick="newGame()">Start</button>
+			<button id="start-game" onclick="newGame()">Start</button><br>
+			<button id="back-to-main-menu" onclick="toggleMainMenu()">Back</button>			
 		</div>
 	</div>
 	<div id ="scoreboard"><h2></h2></div>

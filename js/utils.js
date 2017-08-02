@@ -149,3 +149,11 @@ var reloadGame = function(game_log) {
 	// Starts game
 }
 
+var toggleMainMenu = function() {
+	document.getElementById('game-options').classList.toggle('hide')
+	document.getElementById('main-menu').classList.toggle('hide')
+}
+
+var loadGame = function() {
+	alert('Under construction')
+}
