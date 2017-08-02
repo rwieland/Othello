@@ -213,6 +213,11 @@ RectangularBoard.prototype.adjustGameDimensions = function() {
 	}
 }
 
+RectangularBoard.prototype.resetGameDimensions = function() {
+	this.game.style.height = '70vh'
+	this.game.style.width = '70vh'
+}
+
 RectangularBoard.prototype.clear = function() {
 	// Clears the board from #game
 	var b = document.querySelectorAll('.row')

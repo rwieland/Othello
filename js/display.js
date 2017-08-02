@@ -36,6 +36,7 @@ Othello.prototype.update = function() {
 Othello.prototype.winDisplay = function() {
 	// Creates a diplay shown when the game is over
 	this.clear()
+	this.resetGameDimensions()
 	var plane_navigation = document.getElementById('plane-navigation')
 	plane_navigation ? plane_navigation.remove() : null
 	win_display = document.createElement('div')
