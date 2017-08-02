@@ -171,15 +171,29 @@ RectangularBoard.prototype.adjustGameDimensions = function() {
 	// Adjusts the game display to show a rectangular board with square tiles
 	var x = this.disp.indexOf('x')
 	var y = this.disp.indexOf('y')
+	
+	var wh = window.innerHeight
+	var ww = window.innerWidth
+	var th = this.dims[y]
+	var tw = this.dims[x]
+	var vr = ''
+	// View reference. i.e. css vh or vw
+	
+	wh / th > ww / tw ? vr = 'vw' : vr = 'vh'
+	/* If there is less room per tile in the window for tiles in the x dimension,
+	*  set the view reference to the view width. Otherwise set it to the view height.
+	*/
+
+	
 	if (this.dims[x] > this.dims[y]) {
-		this.game.style.height = (70.0 * this.dims[y] / this.dims[x]).toString() + 'vmin'
-		this.game.style.width = '70vmin'
+		this.game.style.height = (70.0 * this.dims[y] / this.dims[x]).toString() + vr
+		this.game.style.width = '70' + vr
 	} else if (this.dims[x] < this.dims[y]) {
-		this.game.style.height = '70vmin'	
-		this.game.style.width	= (70.0 * this.dims[x] / this.dims[y]).toString() + 'vmin'
+		this.game.style.height = '70' + vr
+		this.game.style.width	= (70.0 * this.dims[x] / this.dims[y]).toString() + vr
 	} else {
-		this.game.style.height = '70vmin'
-		this.game.style.width = '70vmin'		
+		this.game.style.height = '70' + vr
+		this.game.style.width = '70' + vr		
 	}
 	console.log(this.game)
 	console.log(this.game.style)
