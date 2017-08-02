@@ -34,7 +34,7 @@ GameStats.prototype.parse = function() {
 }
 
 GameStats.prototype.clear = function() {
-	document.cookie = "stats="
+	document.cookie = "stats=;expires=Fri, 1 Jan 1970 23:59:59 GMT;path=/"
 	this.stat_str = ''
 	this.data = []
 }
