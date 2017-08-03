@@ -125,10 +125,10 @@ Othello.prototype.replay = function() {
 	
 	done.innerHTML = 'Done'
 	done.onclick = function() {
-		that.winDisplay()
 		that.barr = that.copy(that.history[that.history.length - 1])
 		that.scoreboard()
 		replay_menu.remove()
+		that.winDisplay()
 	}
 	
 	next.innerHTML = '>'
