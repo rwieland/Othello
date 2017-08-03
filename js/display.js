@@ -184,6 +184,8 @@ Othello.prototype.highlightMove = function(moves) {
 
 Othello.prototype.play = function() {
 	// Plays the next turn
+	localStorage.setItem('last-game', this.gameLog())	
+	
 	this.count += 1
 	if (!this.sim) {
 		this.update()

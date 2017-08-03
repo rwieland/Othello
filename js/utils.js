@@ -145,6 +145,7 @@ var reloadGame = function(game_log) {
 	// Playing moves from move history
 	
 	GAME_OPTIONS.style.display = 'none'
+	CURRENT_GAME.draw()
 	CURRENT_GAME.play()
 	// Starts game
 }
@@ -155,5 +156,11 @@ var toggleMainMenu = function() {
 }
 
 var loadGame = function() {
-	alert('Under construction')
+	var lg = localStorage.getItem('last-game')
+	if (lg) {
+		document.getElementById('main-menu').classList.toggle('hide')
+		reloadGame(lg)
+	} else {
+		alert('No game found')
+	}
 }
