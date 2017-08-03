@@ -1,11 +1,13 @@
 var GameStats = function() {
-	this.stat_str = this.getStats()
-	// A string of games played stored in a cookie
-	this.data = []
-	// An array of game logs
-	this.parse()
-	// Converts stat_str into data	
 	
+	this.stat_str = localStorage.getItem('stat_str')
+	// A string of games played stored in localStorage
+	if (this.stat_str == null) {
+		this.data = []
+	} else {
+		this.parse()
+	}
+	// Converts stat_str into data	if there is data in stat_str
 	this.legend = {
 		'0.2': ['Date, AI version, Board shape, Initial board, Move History, Winner, Players']
 	}
@@ -13,15 +15,15 @@ var GameStats = function() {
 }
 
 GameStats.prototype.write = function(str) {
-	if (this.stat_str == '') {
+	if (this.stat_str == null) {
 		stat_str = str
 	} else {
 		this.stat_str += '    ' + str
 	}	
 	// Updates this.stat_str with new line of data in str
 	var exp = new Date
-	this.setStats(this.stat_str)
-	// Updates document.cookie with new line of data in str
+	localStorage.setItem('stat_str', this.stat_str)
+	// Updates localStorage with new line of data in str
 	this.parse()
 	// Updates this.data with new line of data in str
 }
@@ -34,8 +36,8 @@ GameStats.prototype.parse = function() {
 }
 
 GameStats.prototype.clear = function() {
-	document.cookie = "stats=;expires=Fri, 1 Jan 1970 23:59:59 GMT;path=/"
-	this.stat_str = ''
+	localStorage.removeItem('stat_str')
+	this.stat_str = null
 	this.data = []
 }
 
@@ -111,21 +113,6 @@ GameStats.prototype.dateFilter = function(end, start = new Date, arr = this.data
 GameStats.prototype.setStats = function(cvalue) {
     var expires = "expires=Fri, 31 Dec 9999 23:59:59 GMT";
     document.cookie = "stats=" + cvalue + ";" + expires + ";path=/";
-}
-
-GameStats.prototype.getStats = function() {
-    var name = "stats=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
 }
 
 GameStats.prototype.display = function() {
