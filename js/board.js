@@ -158,7 +158,7 @@ RectangularBoard.prototype.draw = function() {
 			var tile = document.createElement('div')
 			tile_border.className = 'tile-border'
 			tile.className = 'tile'
-			tile.id = 't' + y.join('')
+			tile.id = 't' + y.join('.')
 			tile_border.appendChild(tile)
 			row.appendChild(tile_border)	
 		})

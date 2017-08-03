@@ -1,11 +1,11 @@
 Othello.prototype.posToSel = function(position) {
 	// Converts a position to an html selection.
-	return document.getElementById('t' + position.join(''))
+	return document.getElementById('t' + position.join('.'))
 }
 
 Othello.prototype.selToPos = function(sel) {
 	// Converts a selected id to a position.
-	return sel.id.split('').slice(1).map(function(x) {return parseInt(x)})
+	return sel.id.slice(1).split('.').map(function(x) {return parseInt(x)})
 }
 
 Othello.prototype.update = function() {
