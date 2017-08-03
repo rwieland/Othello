@@ -158,6 +158,7 @@ var toggleMainMenu = function() {
 var loadGame = function() {
 	var lg = localStorage.getItem('last-game')
 	if (lg) {
+		document.getElementById('game-options').classList.toggle('hide')
 		document.getElementById('main-menu').classList.toggle('hide')
 		reloadGame(lg)
 	} else {
