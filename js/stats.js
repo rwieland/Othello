@@ -16,7 +16,7 @@ var GameStats = function() {
 
 GameStats.prototype.write = function(str) {
 	if (this.stat_str == null) {
-		stat_str = str
+		this.stat_str = str
 	} else {
 		this.stat_str += '    ' + str
 	}	
