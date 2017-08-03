@@ -116,18 +116,105 @@ GameStats.prototype.setStats = function(cvalue) {
 }
 
 GameStats.prototype.display = function() {
+	document.getElementById('main-menu').classList.toggle('hide')
+	
+	stats_display = document.createElement('div')
+	stats_display.setAttribute('class', 'game-overlay')
+	title = document.createElement('h2')
+	stats_table = document.createElement('table')
+	clear_button = document.createElement('button')
+	return_button = document.createElement('button')
+	
+	stats_display.appendChild(title)
+	stats_display.appendChild(stats_table)
+	stats_display.appendChild(clear_button)
+	stats_display.appendChild(return_button)
+	stats_display.id = 'stats-display'
+	
+	title.innerHTML = 'Game Statistics'
+	
+	stats_table.style.width = '100%'
+	
 	var today = new Date()
 	var yesterday = new Date()
 	var last_week = new Date()
 	var last_month = new Date()
 	
-	yesterday.setDate(yesterday.getDate() - 1)
-	last_week.setDate(last_week.getDate() - 7)
-	last_month.setDate(last_month.getDate() - 30)
+	var row_dates = [
+		yesterday.setDate(yesterday.getDate() - 1),
+		last_week.setDate(last_week.getDate() - 7),
+		last_month.setDate(last_month.getDate() - 30),
+		new Date(0)
+	]
 	
-	console.log(today, yesterday, last_week, last_month)
+	var row_labels = [
+		'Past Day',
+		'Past Week',
+		'Past Month',
+		'All Time'
+	]
 	
-	alert('Under construction')
+	var col_labels = [
+		'',
+		'Wins',
+		'Losses',
+		'Ties',
+		'Total',
+		'Win %'
+	]
+	
+	var top_row = document.createElement('tr')
+	for (i = 0; i < col_labels.length; i++) {
+		var entry = document.createElement('th')
+		entry.innerHTML = col_labels[i]
+		top_row.appendChild(entry)
+	}
+	stats_table.appendChild(top_row)
+	
+	
+	for (i = 0; i < row_dates.length; i++) {
+		stats_table.appendChild(this.newStatsRow(row_dates[i], row_labels[i]))
+	}
+	
+	var that = this
+	
+	clear_button.innerHTML = 'Clear Statistics'
+	clear_button.onclick = function() {
+		that.clear()
+		document.getElementById('main-menu').classList.toggle('hide')
+		stats_display.remove()
+		alert('Statistics cleared')
+	}
+	
+	return_button.innerHTML = 'Back'
+	return_button.onclick = function() {
+		document.getElementById('main-menu').classList.toggle('hide')
+		stats_display.remove()
+	}
+	
+	document.getElementById('game').appendChild(stats_display)
+}
+
+GameStats.prototype.newStatsRow = function(end_date, label) {
+	var stats = this.statistics('H', this.dateFilter(end_date))
+	var row = document.createElement('tr')
+
+	var displayStats = [
+		label,
+		stats['wins'],
+		stats['ties'],
+		stats['losses'],
+		stats['1 player games played'],
+		Math.floor(stats['wins'] / stats['1 player games played'] * 100)
+	]
+
+	displayStats.forEach(function(x){
+		var entry = document.createElement('td')
+		entry.innerHTML = x
+		row.appendChild(entry)
+	})
+	
+	return row
 }
 
 STATS = new GameStats
