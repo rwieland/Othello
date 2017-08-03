@@ -195,10 +195,6 @@ RectangularBoard.prototype.adjustGameDimensions = function() {
 		this.game.style.height = '70' + vr
 		this.game.style.width = '70' + vr		
 	}
-	console.log(this.game)
-	console.log(this.game.style)
-	console.log(this.game.style.height)
-	console.log(this.game.style.width)
 
 	var rows = this.game.querySelectorAll('.row')
 	var row_height = 1.0 / this.dims[y] * 100
