@@ -65,7 +65,7 @@ Othello.prototype.winDisplay = function() {
 	reset_button.onclick = function() {
 		that.options.style.display = ''
 		win_display.remove()
-		document.getElementById('scoreboard').remove()
+		document.getElementById('scoreboard').firstChild.innerHTML = ''
 	}
 	
 	replay_button.innerHTML = 'View Game'
