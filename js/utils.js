@@ -133,8 +133,18 @@ var reloadGame = function(game_log) {
 	}).slice(1)
 	// Retrieving move history from game log
 	
+	game_log[5] == 'F' ? CURRENT_GAME.cr = false : CURRENT_GAME.cr = true
+	// If the game is already completed, the game is marked as a complete replay
+	// This stops the game from being recorded to the game log
+	
 	CURRENT_GAME.players = game_log[6].split('')
 	// Sets players equal to players from the game log
+	if (CURRENT_GAME.players.every(function(p) {return p != 'H'})) {
+		CURRENT_GAME.sim = true
+	} else {
+		CURRENT_GAME.sim = false
+	}
+	// Determines if the game is a simulation
 	
 	moves.forEach(function(x) {
 		CURRENT_GAME.current = x[0]

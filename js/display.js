@@ -193,8 +193,8 @@ Othello.prototype.play = function() {
 	}
 	
 	if (this.winner() !== false) { // If there is a winner		
-		STATS.write(this.gameLog())
-		// Write the game log to stats
+		if (!this.cr) {STATS.write(this.gameLog())}
+		// Write the game log to stats if it is not a complete replay
 		if (!this.sim) {this.winDisplay()}
 	} else if (this.validMoves()) { // If the current player can make a move.
 		switch(this.players[this.current]) {
@@ -274,6 +274,7 @@ Othello.prototype.start = function() {
 		this.changeViewPlane()
 	}
 	this.sim = false
+	this.cr = false
 	
 	this.play()
 }
