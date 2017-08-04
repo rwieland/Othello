@@ -104,8 +104,8 @@ GameStats.prototype.dateFilter = function(end, start = new Date, arr = this.data
 	return arr.filter(function(x) {
 		var d = new Date(x[0])
 		d = Date.parse(d)
-		e = Date.parse(end)
-		s = Date.parse(start)
+		var e = Date.parse(end)
+		var s = Date.parse(start)
 		return e < d && d < s
 	})
 }
@@ -141,9 +141,9 @@ GameStats.prototype.display = function() {
 	var last_month = new Date()
 	
 	var row_dates = [
-		yesterday.setDate(yesterday.getDate() - 1),
-		last_week.setDate(last_week.getDate() - 7),
-		last_month.setDate(last_month.getDate() - 30),
+		new Date(yesterday.setDate(-1)),
+		new Date(last_week.setDate(-7)),
+		new Date(last_month.setDate(-30)),
 		new Date(0)
 	]
 	
