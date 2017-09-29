@@ -202,8 +202,8 @@ GameStats.prototype.newStatsRow = function(end_date, label) {
 	var displayStats = [
 		label,
 		stats['wins'],
-		stats['ties'],
 		stats['losses'],
+		stats['ties'],
 		stats['1 player games played'],
 		Math.floor(stats['wins'] / stats['1 player games played'] * 100)
 	]
