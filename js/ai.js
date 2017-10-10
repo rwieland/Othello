@@ -46,9 +46,52 @@ Othello.prototype.strategicMove = function(moves = this.validMoves()) {
 Othello.prototype.moveWeights = function(moves = this.validMoves()) {
 	// Returns an array of move weights for a provided array of moves
 	var that = this
+	if (this.t_weights === undefined) {this.transformWeights()}
 	if (moves === false) {return [0]}
 	return moves.map(function(x) {
-		return that.weights[`${x[0][0][0]}${x[0][0][1]}`]
+		return that.t_weights[x[0][0].join('.')]
+	})
+}
+
+Othello.prototype.transformWeights = function() {
+	var trans = this.dims.map(function(x) {
+		y = [0]
+		for (var i = 1; i < x; i++) {
+			if (i == x - 1) {
+				y.push(7)
+			} else if (i == Math.floor(x/2) - 1) {
+				y.push(3)
+			} else if (i == Math.floor(x/2)) {
+				y.push(4)
+			} else if (i < Math.floor(x/2) - 1) {
+				if (i % 2 == 0) {
+					y.push(2)
+				} else {
+					y.push(1)					
+				}
+			} else {
+				if ((x - 1 - i) % 2 == 0) {
+					y.push(5)
+				} else {
+					y.push(6)
+				}
+			}
+		}
+		return y
+	})
+	
+	this.t_weights = {}
+	var that = this
+	this.poss.forEach(function(x) {
+		var w = 1
+		for (var i = 0; i < x.length - 1; i++) {
+			for (var j = 1; j < x.length; j++) {
+				ti = trans[i][x[i]]
+				tj = trans[j][x[j]]
+				w *= that.weights[`${ti}${tj}`]				
+			}
+		}
+		that.t_weights[x.join('.')] = w
 	})
 }
 
@@ -62,9 +105,11 @@ Othello.prototype.weightedMove = function(moves = this.validMoves()) {
 
 Othello.prototype.nextMoveMaxWeights = function(moves = this.validMoves()) {
 	// Returns an array of move weights based on what the next player can play
+	if (this.t_weights === undefined) {this.transformWeights()}
 	var that = this
 	return moves.map(function(x) {
-		var a = new Othello('8x8')
+		var a = new Othello(that.dims.join('x'))
+		a.t_weights = that.t_weights
 		a.barr = a.copy(that.barr)
 		a.current = that.current
 		a.move(x[0][0], a.players[a.current])

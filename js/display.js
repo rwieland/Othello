@@ -255,12 +255,7 @@ Othello.prototype.start = function() {
 		case '1':
 			var a = this.opt('ai')
 			var h = this.opt('human')
-			if (this.dims.length == 2 && this.dims[0] == 8 && this.dims[1] == 8) {
-				h == '0' ? this.players = ['H', a] : this.players = [a, 'H']
-			} else {
-				alert('Advanced AIs only work for 8x8 boards. Using easiest AI.')
-				h == '0' ? this.players = ['H', '0'] : this.players = ['0', 'H']
-			}
+			h == '0' ? this.players = ['H', a] : this.players = [a, 'H']
 			
 			this.turn_delay = parseInt(this.opt('turn-speed'))
 			break
