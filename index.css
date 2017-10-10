@@ -1,13 +1,32 @@
 body {
-	background: lightblue;
+	background-color: #FAF9DA;
+	background-image: 
+	radial-gradient(circle at 100% 150%, #F5D483 24%, #FAF9DA 25%, #FAF9DA 28%, #F5D483 29%, #F5D483 36%, #FAF9DA 36%, #FAF9DA 40%, transparent 40%, transparent),
+	radial-gradient(circle at 0    150%, #F5D483 24%, #FAF9DA 25%, #FAF9DA 28%, #F5D483 29%, #F5D483 36%, #FAF9DA 36%, #FAF9DA 40%, transparent 40%, transparent),
+	radial-gradient(circle at 50%  100%, #FAF9DA 10%, #F5D483 11%, #F5D483 23%, #FAF9DA 24%, #FAF9DA 30%, #F5D483 31%, #F5D483 43%, #FAF9DA 44%, #FAF9DA 50%, #F5D483 51%, #F5D483 63%, #FAF9DA 64%, #FAF9DA 71%, transparent 71%, transparent),
+	radial-gradient(circle at 100% 50%, #FAF9DA 5%, #F5D483 6%, #F5D483 15%, #FAF9DA 16%, #FAF9DA 20%, #F5D483 21%, #F5D483 30%, #FAF9DA 31%, #FAF9DA 35%, #F5D483 36%, #F5D483 45%, #FAF9DA 46%, #FAF9DA 49%, transparent 50%, transparent),
+	radial-gradient(circle at 0    50%, #FAF9DA 5%, #F5D483 6%, #F5D483 15%, #FAF9DA 16%, #FAF9DA 20%, #F5D483 21%, #F5D483 30%, #FAF9DA 31%, #FAF9DA 35%, #F5D483 36%, #F5D483 45%, #FAF9DA 46%, #FAF9DA 49%, transparent 50%, transparent);
+	background-size: 60px 30px;
 }
 
 h1 {
 	text-align: center;
+	font-family: 'Wire One', sans-serif;
+	font-size: 300%;
+	color: #5D4B33;
+	margin-top: 0px;
+	padding-top: 0.5em;
+	margin-bottom: 0.3em;
 }
 
 h2 {
 	text-align: center;
+	font-family: 'Wire One', sans-serif;
+	font-size: 400%;
+	color: #5D4B33;
+	margin-top: 0px;
+	padding-top: 0.5em;
+	margin-bottom: 0.3em;
 }
 
 ul {
@@ -16,6 +35,14 @@ ul {
 
 li {
 	margin: 2px;
+	font-family: 'Wire One', sans-serif;
+	font-size: 250%;
+	color: #5D4B33;
+	display: inline-block;
+	margin-top: 0;
+	margin-bottom: 0.5em;
+	border: none;
+	background: none;
 }
 
 .hide {
@@ -23,11 +50,16 @@ li {
 }
 
 #game {
-	height: 70vmin;
-	width: 70vmin;
+	height: 85vmin;
+	width: 85vmin;
 	margin: 0 auto;
 	border: solid black 4px;
-	background: gray;
+	background-color: #5D4B33;
+	background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
+	linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
+	linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
+	linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+	background-size: 13px, 29px, 37px, 53px;
 	display: block;
 }
 
@@ -49,7 +81,7 @@ li {
 .tile {
 	height: 95%;
 	width: 95%;
-	background: green;
+	background-color: #abaf7e;
 	position: relative;
 	top: 2.5%;
 	left: 2.5%;
@@ -69,14 +101,50 @@ li {
 .game-overlay {
 	width: 60vmin;
 	margin: 0 auto;
-	margin-top: 10vmin;
+	margin-top: 5vmin;
 	border: solid black 4px;
-	background: lightgray;
+	background-color: #FAF9DA;
 	text-align: center;
 }
 
 button {
 	margin: 10px;
+	font-family: 'Wire One', sans-serif;
+	font-size: 300%;
+	color: #5D4B33;
+	display: inline-block;
+	margin-top: 0;
+	margin-bottom: 0.5em;
+	border: none;
+	background: none;
+}
+
+select {
+	font-family: 'Wire One', sans-serif;
+	font-size: 75%;
+	color: #5D4B33;
+	display: inline-block;
+	margin-top: 0;
+	margin-bottom: 0.5em;
+	background: none;
+}
+
+textarea {
+	font-family: 'Wire One', sans-serif;
+	font-size: 75%;
+	color: #5D4B33;
+	display: inline-block;
+	background: none;
+}
+
+button:hover {
+	cursor: pointer;
+	color: #D04E3E;
+}
+
+button:active {
+	text-decoration: underline;
+	color: #D04E3E;
 }
 
 .scoreboard {
