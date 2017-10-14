@@ -1,6 +1,6 @@
 # Othello
 A clone of the board game Othello (Reversi)
 
-[GitHub Pages](https://rwieland.github.io/Othello/)
+[Play](https://rwieland.github.io/Othello/) on GitHub Pages
 
 [Official Rules](http://usothello.org/misc/USOA_Tourn_Rules.pdf)
